@@ -69,7 +69,7 @@ use tokens;
 /// If `syn` is used to parse existing Rust source code, it is often useful to
 /// convert the `Ident` to a more generic string data type at some point. The
 /// methods `as_ref()` and `to_string()` achieve this.
-/// 
+///
 /// ```rust
 /// # use syn::Ident;
 /// # let ident = Ident::from("another_identifier");
@@ -99,6 +99,7 @@ impl Ident {
     ///
     /// Creating new `Ident`s programmatically is easier with `Ident::from`.
     pub fn new(sym: Term, span: Span) -> Self {
+        println!("testing");
         let s = sym.as_str();
 
         if s.is_empty() {
