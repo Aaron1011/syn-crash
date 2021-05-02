@@ -34,12 +34,6 @@ pub use expr::{Expr, ExprKind, ExprBox, ExprInPlace, ExprArray, ExprCall,
                ExprRet, ExprStruct, ExprRepeat, ExprParen, ExprTry, ExprCatch,
                ExprGroup, ExprYield};
 
-#[cfg(feature = "full")]
-pub use expr::{Arm, BindingMode, Block, CaptureBy, FieldPat, FieldValue, Local,
-               MacStmtStyle, Pat, RangeLimits, Stmt, PatIdent, PatWild,
-               PatStruct, PatTuple, PatTupleStruct, PatPath, PatBox, PatRef,
-               PatLit, PatRange, PatSlice, InPlaceKind};
-
 mod generics;
 pub use generics::{Generics, LifetimeDef, TraitBoundModifier, TyParam, TyParamBound,
                    WhereBoundPredicate, WhereClause, WhereEqPredicate, WherePredicate,
@@ -49,20 +43,6 @@ pub use generics::{ImplGenerics, Turbofish, TyGenerics};
 
 mod ident;
 pub use ident::Ident;
-
-#[cfg(feature = "full")]
-mod item;
-#[cfg(feature = "full")]
-pub use item::{Constness, Defaultness, FnArg, FnDecl, ForeignItemKind, ForeignItem, ItemForeignMod,
-               ImplItem, ImplItemKind, ImplPolarity, Item, ItemKind, MethodSig, PathListItem,
-               TraitItem, TraitItemKind, ViewPath, ItemExternCrate, ItemUse,
-               ItemStatic, ItemConst, ItemFn, ItemMod, ItemTy, ItemEnum,
-               ItemStruct, ItemUnion, ItemTrait, ItemDefaultImpl, ItemImpl,
-               PathSimple, PathGlob, PathList, ForeignItemFn, ForeignItemStatic,
-               TraitItemConst, TraitItemMethod, TraitItemType,
-               ImplItemConst, ImplItemMethod, ImplItemType, ArgSelfRef,
-               ArgSelf, ArgCaptured};
-
 
 mod lifetime;
 pub use lifetime::Lifetime;
@@ -242,75 +222,6 @@ pub fn parse_tokens<T: Synom>(tokens: quote::Tokens) -> Result<T, ParseError> {
 #[cfg(feature = "parsing")]
 pub fn parse_str<T: Synom>(s: &str) -> Result<T, ParseError> {
     _parse(s.parse()?)
-}
-
-// FIXME the name parse_file makes it sound like you might pass in a path to a
-// file, rather than the content.
-/// Parse the content of a file of Rust code.
-///
-/// This is different from `syn::parse_str::<File>(content)` in two ways:
-///
-/// - It discards a leading byte order mark `\u{FEFF}` if the file has one.
-/// - It preserves the shebang line of the file, such as `#!/usr/bin/env rustx`.
-///
-/// If present, either of these would be an error using `from_str`.
-///
-/// # Examples
-///
-/// ```rust,no_run
-/// extern crate syn;
-/// #
-/// # #[macro_use]
-/// # extern crate error_chain;
-///
-/// use std::fs::File;
-/// use std::io::Read;
-/// #
-/// # error_chain! {
-/// #     foreign_links {
-/// #         Io(std::io::Error);
-/// #         Syn(syn::ParseError);
-/// #     }
-/// # }
-///
-/// fn run() -> Result<()> {
-///     let mut file = File::open("path/to/code.rs")?;
-///     let mut content = String::new();
-///     file.read_to_string(&mut content)?;
-///
-///     let ast = syn::parse_file(&content)?;
-///     if let Some(shebang) = ast.shebang {
-///         println!("{}", shebang);
-///     }
-///     println!("{} items", ast.items.len());
-///
-///     Ok(())
-/// }
-/// #
-/// # fn main() { run().unwrap() }
-/// ```
-#[cfg(all(feature = "parsing", feature = "full"))]
-pub fn parse_file(mut content: &str) -> Result<File, ParseError> {
-    // Strip the BOM if it is present
-    const BOM: &'static str = "\u{feff}";
-    if content.starts_with(BOM) {
-        content = &content[BOM.len()..];
-    }
-
-    let mut shebang = None;
-    if content.starts_with("#!") && !content.starts_with("#![") {
-        if let Some(idx) = content.find('\n') {
-            shebang = Some(content[..idx].to_string());
-            content = &content[idx..];
-        } else {
-            shebang = Some(content.to_string());
-            content = "";
-        }
-    }
-
-    let mut file: File = parse_str(content)?;
-    file.shebang = shebang;
-    Ok(file)
 }
 
 #[cfg(feature = "printing")]
