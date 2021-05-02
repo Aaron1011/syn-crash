@@ -23,15 +23,6 @@ pub mod parsing {
     use synom::tokens::*;
     use synom::{Synom, PResult, Cursor, parse_error};
 
-    impl Synom for Mac {
-        named!(parse -> Self, do_parse!(
-            what: syn!(Path) >>
-            bang: syn!(Bang) >>
-            body: call!(::TokenTree::parse_delimited) >>
-            (Mac {
-            })
-        ));
-    }
 
     impl ::TokenTree {
         pub fn parse_list(input: Cursor) -> PResult<Vec<Self>> {
