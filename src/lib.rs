@@ -63,10 +63,6 @@ pub use item::{Constness, Defaultness, FnArg, FnDecl, ForeignItemKind, ForeignIt
                ImplItemConst, ImplItemMethod, ImplItemType, ArgSelfRef,
                ArgSelf, ArgCaptured};
 
-#[cfg(feature = "full")]
-mod file;
-#[cfg(feature = "full")]
-pub use file::File;
 
 mod lifetime;
 pub use lifetime::Lifetime;
