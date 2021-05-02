@@ -31,9 +31,6 @@ pub use ident::Ident;
 mod lifetime;
 pub use lifetime::Lifetime;
 
-mod lit;
-pub use lit::{Lit, };
-
 mod mac;
 pub use mac::{TokenTree};
 
