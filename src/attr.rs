@@ -8,12 +8,6 @@ use proc_macro2::{self, Delimiter, TokenNode, Spacing};
 ast_struct! {
     /// Doc-comments are promoted to attributes that have `is_sugared_doc` = true
     pub struct Attribute {
-        /// The path of the attribute.
-        ///
-        /// E.g. `derive` in `#[derive(Copy)]`
-        /// E.g. `crate::precondition` in `#[crate::precondition x < 5]`
-        pub path: Path,
-
         /// Any tokens after the path.
         ///
         /// E.g. `( Copy )` in `#[derive(Copy)]`
@@ -41,10 +35,9 @@ pub mod parsing {
             do_parse!(
                 pound: syn!(Pound) >>
                 ({
-                    let ((path, tts)) = panic!();
+                    let tts = panic!();
 
                     Attribute {
-                        path: path,
                         tts: tts,
                     }
                 })
@@ -53,7 +46,6 @@ pub mod parsing {
             map!(
                 lit_doc_comment,
                 |lit| Attribute {
-                    path: "doc".into(),
                     tts: vec![
                         ::TokenTree(eq()),
                         ::TokenTree(lit),
