@@ -8,7 +8,6 @@ use proc_macro2::{self, Delimiter, TokenNode, Spacing};
 ast_struct! {
     /// Doc-comments are promoted to attributes that have `is_sugared_doc` = true
     pub struct Attribute {
-        pub style: AttrStyle,
         pub pound_token: tokens::Pound,
         pub bracket_token: tokens::Bracket,
 
@@ -25,20 +24,6 @@ ast_struct! {
         pub tts: Vec<TokenTree>,
 
         pub is_sugared_doc: bool,
-    }
-}
-
-ast_enum! {
-    /// Distinguishes between Attributes that decorate items and Attributes that
-    /// are contained as statements within items. These two cases need to be
-    /// distinguished for pretty-printing.
-    #[cfg_attr(feature = "clone-impls", derive(Copy))]
-    pub enum AttrStyle {
-        /// Attribute of the form `#[...]`.
-        Outer,
-
-        /// Attribute of the form `#![...]`.
-        Inner(tokens::Bang),
     }
 }
 
@@ -132,7 +117,6 @@ pub mod parsing {
                     let ((path, tts), bracket) = panic!();
 
                     Attribute {
-                        style: AttrStyle::Outer,
                         path: path,
                         tts: tts,
                         is_sugared_doc: false,
@@ -145,7 +129,6 @@ pub mod parsing {
             map!(
                 lit_doc_comment,
                 |lit| Attribute {
-                    style: AttrStyle::Outer,
                     path: "doc".into(),
                     tts: vec![
                         ::TokenTree(eq()),
