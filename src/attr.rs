@@ -28,20 +28,6 @@ ast_struct! {
     }
 }
 
-impl Attribute {
-    /// Parses the tokens after the path as a [`MetaItem`](enum.MetaItem.html) if possible.
-    pub fn meta_item(&self) -> Option<MetaItem> {
-        None
-    }
-}
-
-fn nested_meta_item_from_tokens(tts: &[proc_macro2::TokenTree])
-    -> Option<(NestedMetaItem, &[proc_macro2::TokenTree])>
-{
-    None
-}
-
-
 ast_enum! {
     /// Distinguishes between Attributes that decorate items and Attributes that
     /// are contained as statements within items. These two cases need to be
