@@ -263,7 +263,6 @@ ast_struct! {
     pub struct BareFnTy {
         pub lifetimes: Option<BoundLifetimes>,
         pub unsafety: Unsafety,
-        pub abi: Option<Abi>,
         pub fn_token: tokens::Fn_,
         pub paren_token: tokens::Paren,
         pub inputs: Delimited<BareFnArg, tokens::Comma>,
@@ -277,20 +276,6 @@ ast_enum! {
     pub enum Unsafety {
         Unsafe(tokens::Unsafe),
         Normal,
-    }
-}
-
-ast_struct! {
-    pub struct Abi {
-        pub extern_token: tokens::Extern,
-        pub kind: AbiKind,
-    }
-}
-
-ast_enum! {
-    pub enum AbiKind {
-        Named(Lit),
-        Default,
     }
 }
 
@@ -370,8 +355,6 @@ pub mod parsing {
         |
         syn!(TyRptr) => { Ty::Rptr }
         |
-        syn!(TyBareFn) => { Ty::BareFn }
-        |
         syn!(TyNever) => { Ty::Never }
         |
         syn!(TyTup) => { Ty::Tup }
@@ -449,33 +432,6 @@ pub mod parsing {
         ));
     }
 
-    impl Synom for TyBareFn {
-        named!(parse -> Self, do_parse!(
-            lifetimes: option!(syn!(BoundLifetimes)) >>
-            unsafety: syn!(Unsafety) >>
-            abi: option!(syn!(Abi)) >>
-            fn_: syn!(Fn_) >>
-            parens: parens!(do_parse!(
-                inputs: call!(Delimited::parse_terminated) >>
-                variadic: option!(cond_reduce!(inputs.is_empty() || inputs.trailing_delim(),
-                                                syn!(Dot3))) >>
-                (inputs, variadic)
-            )) >>
-            output: syn!(FunctionRetTy) >>
-            (TyBareFn {
-                ty: Box::new(BareFnTy {
-                    unsafety: unsafety,
-                    abi: abi,
-                    lifetimes: lifetimes,
-                    output: output,
-                    variadic: (parens.0).1,
-                    fn_token: fn_,
-                    paren_token: parens.1,
-                    inputs: (parens.0).0,
-                }),
-            })
-        ));
-    }
 
     impl Synom for TyNever {
         named!(parse -> Self, map!(
@@ -803,29 +759,6 @@ pub mod parsing {
             map!(syn!(Ident), BareFnArgName::Named)
             |
             map!(syn!(Underscore), BareFnArgName::Wild)
-        ));
-    }
-
-    impl Synom for Unsafety {
-        named!(parse -> Self, alt!(
-            syn!(Unsafe) => { Unsafety::Unsafe }
-            |
-            epsilon!() => { |_| Unsafety::Normal }
-        ));
-    }
-
-    impl Synom for Abi {
-        named!(parse -> Self, do_parse!(
-            extern_: syn!(Extern) >>
-            // TODO: this parses all literals, not just strings
-            name: option!(syn!(Lit)) >>
-            (Abi {
-                extern_token: extern_,
-                kind: match name {
-                    Some(name) => AbiKind::Named(name),
-                    None => AbiKind::Default,
-                },
-            })
         ));
     }
 }

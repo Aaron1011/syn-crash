@@ -39,7 +39,7 @@ mod mac;
 pub use mac::{Mac, TokenTree};
 
 mod ty;
-pub use ty::{Abi, AbiKind, AngleBracketedParameterData, BareFnArg, BareFnArgName, BareFnTy,
+pub use ty::{AngleBracketedParameterData, BareFnArg, BareFnArgName, BareFnTy,
              FunctionRetTy, MutTy, Mutability, ParenthesizedParameterData, Path,
              PathParameters, PathSegment, PolyTraitRef, QSelf, Ty, TypeBinding, Unsafety,
              TySlice, TyArray, TyPtr, TyRptr, TyBareFn, TyNever, TyTup, TyPath,
