@@ -41,7 +41,7 @@ mod ty;
 pub use ty::{AngleBracketedParameterData, BareFnArg, BareFnArgName, BareFnTy,
              FunctionRetTy, ParenthesizedParameterData, Path,
              PathParameters, PathSegment, PolyTraitRef, QSelf, Ty, TypeBinding, Unsafety,
-             TyBareFn, TyPath,
+             TyBareFn, 
              TyTraitObject, TyGroup};
 
 pub use synom::span::Span;

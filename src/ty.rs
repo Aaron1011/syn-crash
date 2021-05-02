@@ -14,14 +14,6 @@ ast_enum_of_structs! {
             pub tys: Delimited<Ty, tokens::Comma>,
             pub lone_comma: Option<tokens::Comma>,
         }),
-        /// A path (`module::module::...::Type`), optionally
-        /// "qualified", e.g. `<Vec<T> as SomeTrait>::SomeType`.
-        ///
-        /// Type parameters are stored in the Path itself
-        pub Path(TyPath {
-            pub qself: Option<QSelf>,
-            pub path: Path,
-        }),
         /// A trait object type `Bound1 + Bound2 + Bound3`
         /// where `Bound` is a trait or a lifetime.
         pub TraitObject(TyTraitObject {
