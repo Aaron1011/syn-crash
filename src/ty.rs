@@ -322,94 +322,6 @@ pub mod parsing {
         ));
     }
 
-    named!(ty_path(allow_plus: bool) -> Ty, do_parse!(
-        qpath: qpath >>
-        parenthesized: cond!(
-            qpath.1.segments.get(qpath.1.segments.len() - 1).item().parameters.is_empty(),
-            option!(syn!(ParenthesizedParameterData))
-        ) >>
-        // Only allow parsing additional bounds if allow_plus is true.
-        bounds: alt!(
-            cond_reduce!(
-                allow_plus,
-                many0!(tuple!(syn!(Add), syn!(TyParamBound)))
-            )
-            |
-            value!(vec![])
-        ) >>
-        ({
-            let (qself, mut path) = qpath;
-            if let Some(Some(parenthesized)) = parenthesized {
-                let parenthesized = PathParameters::Parenthesized(parenthesized);
-                let len = path.segments.len();
-                path.segments.get_mut(len - 1).item_mut().parameters = parenthesized;
-            }
-            if bounds.is_empty() {
-                TyPath { qself: qself, path: path }.into()
-            } else {
-                let path = TyParamBound::Trait(
-                    PolyTraitRef {
-                        bound_lifetimes: None,
-                        trait_ref: path,
-                    },
-                    TraitBoundModifier::None,
-                );
-                let mut new_bounds = Delimited::new();
-                new_bounds.push_first(path);
-                for (_tok, bound) in bounds {
-                    new_bounds.push_default(bound);
-                }
-                TyTraitObject { bounds: new_bounds }.into()
-            }
-        })
-    ));
-
-    named!(pub qpath -> (Option<QSelf>, Path), alt!(
-        map!(syn!(Path), |p| (None, p))
-        |
-        do_parse!(
-            lt: syn!(Lt) >>
-            this: syn!(Ty) >>
-            path: option!(do_parse!(
-                as_: syn!(As) >>
-                path: syn!(Path) >>
-                (as_, path)
-            )) >>
-            gt: syn!(Gt) >>
-            colon2: syn!(Colon2) >>
-            rest: call!(Delimited::parse_separated_nonempty) >>
-            ({
-                let (pos, as_, path) = match path {
-                    Some((as_, mut path)) => {
-                        let pos = path.segments.len();
-                        if !path.segments.is_empty() && !path.segments.trailing_delim() {
-                            path.segments.push_trailing(colon2);
-                        }
-                        for item in rest {
-                            path.segments.push(item);
-                        }
-                        (pos, Some(as_), path)
-                    }
-                    None => {
-                        (0, None, Path {
-                            leading_colon: Some(colon2),
-                            segments: rest,
-                        })
-                    }
-                };
-                (Some(QSelf {
-                    lt_token: lt,
-                    ty: Box::new(this),
-                    position: pos,
-                    as_token: as_,
-                    gt_token: gt,
-                }), path)
-            })
-        )
-        |
-        map!(syn!(Self_), |s| (None, s.into()))
-    ));
-
     impl Synom for ParenthesizedParameterData {
         named!(parse -> Self, do_parse!(
             data: parens!(call!(Delimited::parse_terminated)) >>
@@ -465,60 +377,6 @@ pub mod parsing {
         ));
     }
 
-    impl Synom for Path {
-        named!(parse -> Self, do_parse!(
-            colon: option!(syn!(Colon2)) >>
-            segments: call!(Delimited::parse_separated_nonempty) >>
-            (Path {
-                leading_colon: colon,
-                segments: segments,
-            })
-        ));
-
-        fn description() -> Option<&'static str> {
-            Some("path")
-        }
-    }
-
-    impl Synom for PathSegment {
-        named!(parse -> Self, alt!(
-            do_parse!(
-                ident: syn!(Ident) >>
-                turbofish: option!(syn!(Colon2)) >>
-                lt: syn!(Lt) >>
-                lifetimes: call!(Delimited::parse_terminated) >>
-                types: cond!(
-                    lifetimes.is_empty() || lifetimes.trailing_delim(),
-                    call!(Delimited::parse_terminated_with,
-                            ty_no_eq_after)
-                ) >>
-                bindings: cond!(
-                    match types {
-                        Some(ref t) => t.is_empty() || t.trailing_delim(),
-                        None => lifetimes.is_empty() || lifetimes.trailing_delim(),
-                    },
-                    call!(Delimited::parse_terminated)
-                ) >>
-                gt: syn!(Gt) >>
-                (PathSegment {
-                    ident: ident,
-                    parameters: PathParameters::AngleBracketed(
-                        AngleBracketedParameterData {
-                            turbofish: turbofish,
-                            lt_token: lt,
-                            lifetimes: lifetimes,
-                            types: types.unwrap_or_default(),
-                            bindings: bindings.unwrap_or_default(),
-                            gt_token: gt,
-                        }
-                    ),
-                })
-            )
-            |
-            mod_style_path_segment
-        ));
-    }
-
     named!(ty_no_eq_after -> Ty, terminated!(syn!(Ty), not!(syn!(Eq))));
 
     impl Path {
@@ -544,41 +402,5 @@ pub mod parsing {
             syn!(CapSelf) => { Into::into }
         )
     ));
-
-    impl Synom for TypeBinding {
-        named!(parse -> Self, do_parse!(
-            id: syn!(Ident) >>
-            eq: syn!(Eq) >>
-            ty: syn!(Ty) >>
-            (TypeBinding {
-                ident: id,
-                eq_token: eq,
-                ty: ty,
-            })
-        ));
-    }
-
-    impl Synom for PolyTraitRef {
-        named!(parse -> Self, do_parse!(
-            bound_lifetimes: option!(syn!(BoundLifetimes)) >>
-            trait_ref: syn!(Path) >>
-            parenthesized: option!(cond_reduce!(
-                trait_ref.segments.get(trait_ref.segments.len() - 1).item().parameters.is_empty(),
-                syn!(ParenthesizedParameterData)
-            )) >>
-            ({
-                let mut trait_ref = trait_ref;
-                if let Some(parenthesized) = parenthesized {
-                    let parenthesized = PathParameters::Parenthesized(parenthesized);
-                    let len = trait_ref.segments.len();
-                    trait_ref.segments.get_mut(len - 1).item_mut().parameters = parenthesized;
-                }
-                PolyTraitRef {
-                    bound_lifetimes: bound_lifetimes,
-                    trait_ref: trait_ref,
-                }
-            })
-        ));
-    }
 }
 

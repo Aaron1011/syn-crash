@@ -258,15 +258,10 @@ pub mod parsing {
         named!(parse -> Self, alt!(
             do_parse!(
                 question: syn!(Question) >>
-                poly: syn!(PolyTraitRef) >>
-                (TyParamBound::Trait(poly, TraitBoundModifier::Maybe(question)))
+                (TyParamBound::Trait(panic!(), TraitBoundModifier::Maybe(question)))
             )
             |
             syn!(Lifetime) => { TyParamBound::Region }
-            |
-            syn!(PolyTraitRef) => {
-                |poly| TyParamBound::Trait(poly, TraitBoundModifier::None)
-            }
         ));
 
         fn description() -> Option<&'static str> {
