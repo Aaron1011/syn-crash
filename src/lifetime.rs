@@ -7,8 +7,6 @@ use unicode_xid::UnicodeXID;
 
 use Span;
 
-#[cfg_attr(feature = "extra-traits", derive(Debug))]
-#[cfg_attr(feature = "clone-impls", derive(Clone))]
 pub struct Lifetime {
     pub sym: Term,
     pub span: Span,
