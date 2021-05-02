@@ -268,22 +268,5 @@ pub mod parsing {
             Some("type parameter buond")
         }
     }
-
-    impl Synom for WhereClause {
-        named!(parse -> Self, alt!(
-            do_parse!(
-                where_: syn!(Where) >>
-                (WhereClause {
-                    where_token: Some(where_),
-                })
-            )
-            |
-            epsilon!() => { |_| WhereClause::default() }
-        ));
-
-        fn description() -> Option<&'static str> {
-            Some("where clause")
-        }
-    }
 }
 
