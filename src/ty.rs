@@ -337,34 +337,6 @@ pub mod parsing {
 
     named!(ambig_ty(allow_plus: bool) -> Ty, alt!(
         syn!(TyGroup) => { Ty::Group }
-        |
-        // must be before mac
-        syn!(TyParen) => { Ty::Paren }
-        |
-        // must be before path
-        syn!(Mac) => { Ty::Mac }
-        |
-        // must be before ty_poly_trait_ref
-        call!(ty_path, allow_plus)
-        |
-        syn!(TySlice) => { Ty::Slice }
-        |
-        syn!(TyArray) => { Ty::Array }
-        |
-        syn!(TyPtr) => { Ty::Ptr }
-        |
-        syn!(TyRptr) => { Ty::Rptr }
-        |
-        syn!(TyNever) => { Ty::Never }
-        |
-        syn!(TyTup) => { Ty::Tup }
-        |
-        // Don't try parsing poly_trait_ref if we aren't allowing it
-        call!(ty_poly_trait_ref, allow_plus)
-        |
-        syn!(TyImplTrait) => { Ty::ImplTrait }
-        |
-        syn!(TyInfer) => { Ty::Infer }
     ));
 
     impl Synom for TySlice {
