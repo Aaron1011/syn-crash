@@ -27,12 +27,6 @@ pub struct ImplGenerics<'a>(&'a Generics);
 pub struct TyGenerics<'a>(&'a Generics);
 
 #[cfg(feature = "printing")]
-#[cfg_attr(feature = "extra-traits", derive(Debug, Eq, PartialEq, Hash))]
-#[cfg_attr(feature = "clone-impls", derive(Clone))]
-/// Returned by `TyGenerics::as_turbofish`.
-pub struct Turbofish<'a>(&'a Generics);
-
-#[cfg(feature = "printing")]
 impl Generics {
     /// Split a type's generics into the pieces required for impl'ing a trait
     /// for that type.
@@ -55,14 +49,6 @@ impl Generics {
     /// ```
     pub fn split_for_impl(&self) -> (ImplGenerics, TyGenerics, &WhereClause) {
         (ImplGenerics(self), TyGenerics(self), &self.where_clause)
-    }
-}
-
-#[cfg(feature = "printing")]
-impl<'a> TyGenerics<'a> {
-    /// Turn a type's generics like `<X, Y>` into a turbofish like `::<X, Y>`.
-    pub fn as_turbofish(&self) -> Turbofish {
-        Turbofish(self.0)
     }
 }
 
