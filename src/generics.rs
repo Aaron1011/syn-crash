@@ -214,21 +214,6 @@ pub mod parsing {
         ));
     }
 
-    impl Synom for BoundLifetimes {
-        named!(parse -> Self, do_parse!(
-            for_: syn!(For) >>
-            lt: syn!(Lt) >>
-            lifetimes: call!(Delimited::parse_terminated) >>
-            gt: syn!(Gt) >>
-            (BoundLifetimes {
-                for_token: for_,
-                lt_token: lt,
-                gt_token: gt,
-                lifetimes: lifetimes,
-            })
-        ));
-    }
-
     impl Synom for TyParam {
         named!(parse -> Self, do_parse!(
             attrs: many0!(call!(Attribute::parse_outer)) >>
