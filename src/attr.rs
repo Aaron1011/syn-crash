@@ -41,40 +41,6 @@ fn nested_meta_item_from_tokens(tts: &[proc_macro2::TokenTree])
     None
 }
 
-fn list_of_nested_meta_items_from_tokens(mut tts: &[proc_macro2::TokenTree])
-    -> Option<Delimited<NestedMetaItem, tokens::Comma>>
-{
-    let mut delimited = Delimited::new();
-    let mut first = true;
-
-    while !tts.is_empty() {
-        let prev_comma = if first {
-            first = false;
-            None
-        } else if let TokenNode::Op(',', Spacing::Alone) = tts[0].kind {
-            let tok = tokens::Comma([Span(tts[0].span)]);
-            tts = &tts[1..];
-            if tts.is_empty() {
-                break
-            }
-            Some(tok)
-        } else {
-            return None
-        };
-        let (nested, rest) = match nested_meta_item_from_tokens(tts) {
-            Some(pair) => pair,
-            None => return None,
-        };
-        match prev_comma {
-            Some(comma) => delimited.push_next(nested, comma),
-            None => delimited.push_first(nested),
-        }
-        tts = rest;
-    }
-
-    Some(delimited)
-}
-
 
 ast_enum! {
     /// Distinguishes between Attributes that decorate items and Attributes that
