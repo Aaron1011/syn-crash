@@ -55,18 +55,6 @@ pub use synom::span::Span;
 pub use synom::tokens;
 pub use synom::delimited;
 
-mod gen {
-    #[cfg(feature = "visit")]
-    pub mod visit;
-
-    #[cfg(feature = "visit_mut")]
-    pub mod visit_mut;
-
-    #[cfg(feature = "fold")]
-    pub mod fold;
-}
-pub use gen::*;
-
 ////////////////////////////////////////////////////////////////////////////////
 
 #[cfg(feature = "parsing")]
