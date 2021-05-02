@@ -98,23 +98,6 @@ macro_rules! generate_to_tokens {
     );
 }
 
-#[cfg(feature = "full")]
-macro_rules! to_tokens_call {
-    ($e:ident, $tokens:ident, $($rest:tt)*) => {
-        $e.to_tokens($tokens)
-    };
-}
-
-#[cfg(not(feature = "full"))]
-macro_rules! to_tokens_call {
-    // If the variant is marked as #full, don't auto-generate to-tokens for it.
-    ($e:ident, $tokens:ident, #full $($rest:tt)*) => {
-        unreachable!()
-    };
-    ($e:ident, $tokens:ident, $($rest:tt)*) => {
-        $e.to_tokens($tokens)
-    };
-}
 
 macro_rules! maybe_ast_struct {
     (
