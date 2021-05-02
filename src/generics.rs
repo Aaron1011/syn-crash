@@ -194,39 +194,5 @@ pub mod parsing {
 
     use synom::Synom;
     use synom::tokens::*;
-
-
-    impl Synom for LifetimeDef {
-        named!(parse -> Self, do_parse!(
-            attrs: many0!(call!(Attribute::parse_outer)) >>
-            life: syn!(Lifetime) >>
-            colon: option!(syn!(Colon)) >>
-            bounds: cond!(
-                colon.is_some(),
-                call!(Delimited::parse_separated_nonempty)
-            ) >>
-            (LifetimeDef {
-                attrs: attrs,
-                lifetime: life,
-                bounds: bounds.unwrap_or_default(),
-                colon_token: colon.map(|_| tokens::Colon::default()),
-            })
-        ));
-    }
-
-    impl Synom for TyParamBound {
-        named!(parse -> Self, alt!(
-            do_parse!(
-                question: syn!(Question) >>
-                (TyParamBound::Trait(panic!(), TraitBoundModifier::Maybe(question)))
-            )
-            |
-            syn!(Lifetime) => { TyParamBound::Region }
-        ));
-
-        fn description() -> Option<&'static str> {
-            Some("type parameter buond")
-        }
-    }
 }
 

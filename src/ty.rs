@@ -346,16 +346,6 @@ pub mod parsing {
         ));
     }
 
-    // Only allow multiple trait references if allow_plus is true.
-    named!(ty_poly_trait_ref(allow_plus: bool) -> Ty, alt!(
-        cond_reduce!(allow_plus, call!(Delimited::parse_separated_nonempty)) => {
-            |x| TyTraitObject { bounds: x }.into()
-        }
-        |
-        syn!(TyParamBound) => {
-            |x| TyTraitObject { bounds: vec![x].into() }.into()
-        }
-    ));
 
     impl Synom for TyGroup {
         named!(parse -> Self, do_parse!(
