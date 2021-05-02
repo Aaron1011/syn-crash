@@ -79,11 +79,6 @@ ast_enum_of_structs! {
             pub ident: Ident,
 
             pub eq_token: tokens::Eq,
-
-            /// Arguments to this attribute
-            ///
-            /// E.g. `"foo"` in `#[feature = "foo"]`
-            pub lit: Lit,
         }),
     }
 }
