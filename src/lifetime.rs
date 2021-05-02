@@ -21,18 +21,7 @@ pub mod parsing {
 
     impl Synom for Lifetime {
         fn parse(input: Cursor) -> PResult<Self> {
-            let (rest, span, sym) = match input.word() {
-                Some(word) => word,
-                _ => return parse_error(),
-            };
-            if !sym.as_str().starts_with('\'') {
-                return parse_error();
-            }
-
-            Ok((rest, Lifetime {
-                sym: sym,
-                span: Span(span),
-            }))
+            parse_error()
         }
     }
 }
