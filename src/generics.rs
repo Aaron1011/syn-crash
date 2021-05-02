@@ -10,7 +10,6 @@ ast_struct! {
         pub gt_token: Option<tokens::Gt>,
         pub lifetimes: Delimited<LifetimeDef, tokens::Comma>,
         pub ty_params: Delimited<TyParam, tokens::Comma>,
-        pub where_clause: WhereClause,
     }
 }
 
@@ -26,31 +25,6 @@ pub struct ImplGenerics<'a>(&'a Generics);
 /// Returned by `Generics::split_for_impl`.
 pub struct TyGenerics<'a>(&'a Generics);
 
-#[cfg(feature = "printing")]
-impl Generics {
-    /// Split a type's generics into the pieces required for impl'ing a trait
-    /// for that type.
-    ///
-    /// ```
-    /// # extern crate syn;
-    /// # #[macro_use]
-    /// # extern crate quote;
-    /// # fn main() {
-    /// # let generics: syn::Generics = Default::default();
-    /// # let name = syn::Ident::from("MyType");
-    /// let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
-    /// quote! {
-    ///     impl #impl_generics MyTrait for #name #ty_generics #where_clause {
-    ///         // ...
-    ///     }
-    /// }
-    /// # ;
-    /// # }
-    /// ```
-    pub fn split_for_impl(&self) -> (ImplGenerics, TyGenerics, &WhereClause) {
-        (ImplGenerics(self), TyGenerics(self), &self.where_clause)
-    }
-}
 
 ast_struct! {
     /// A set of bound lifetimes, e.g. `for<'a, 'b, 'c>`
@@ -127,49 +101,5 @@ ast_enum! {
     pub enum TraitBoundModifier {
         None,
         Maybe(tokens::Question),
-    }
-}
-
-ast_struct! {
-    /// A `where` clause in a definition
-    #[derive(Default)]
-    pub struct WhereClause {
-        pub where_token: Option<tokens::Where>,
-    }
-}
-
-impl WhereClause {
-    pub fn none() -> Self {
-        WhereClause::default()
-    }
-}
-
-ast_enum_of_structs! {
-    /// A single predicate in a `where` clause
-    pub enum WherePredicate {
-        /// A type binding, e.g. `for<'c> Foo: Send+Clone+'c`
-        pub BoundPredicate(WhereBoundPredicate {
-            /// Any lifetimes from a `for` binding
-            pub bound_lifetimes: Option<BoundLifetimes>,
-            /// The type being bounded
-            pub bounded_ty: Ty,
-            pub colon_token: tokens::Colon,
-            /// Trait and lifetime bounds (`Clone+Send+'static`)
-            pub bounds: Delimited<TyParamBound, tokens::Add>,
-        }),
-
-        /// A lifetime predicate, e.g. `'a: 'b+'c`
-        pub RegionPredicate(WhereRegionPredicate {
-            pub lifetime: Lifetime,
-            pub colon_token: Option<tokens::Colon>,
-            pub bounds: Delimited<Lifetime, tokens::Add>,
-        }),
-
-        /// An equality predicate (unsupported)
-        pub EqPredicate(WhereEqPredicate {
-            pub lhs_ty: Ty,
-            pub eq_token: tokens::Eq,
-            pub rhs_ty: Ty,
-        }),
     }
 }

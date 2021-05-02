@@ -23,8 +23,7 @@ pub use attr::{Attribute, AttrStyle, MetaItem, NestedMetaItem, MetaItemList,
 
 mod generics;
 pub use generics::{Generics, LifetimeDef, TraitBoundModifier, TyParam, TyParamBound,
-                   WhereBoundPredicate, WhereClause, WhereEqPredicate, WherePredicate,
-                   WhereRegionPredicate, BoundLifetimes};
+                   BoundLifetimes};
 
 mod ident;
 pub use ident::Ident;
