@@ -138,12 +138,8 @@ pub mod parsing {
         named!(pub parse_outer -> Self, alt!(
             do_parse!(
                 pound: syn!(Pound) >>
-                path_and_tts: brackets!(tuple!(
-                    call!(::Path::parse_mod_style),
-                    call!(::TokenTree::parse_list)
-                )) >>
                 ({
-                    let ((path, tts), bracket) = path_and_tts;
+                    let ((path, tts), bracket) = panic!();
 
                     Attribute {
                         style: AttrStyle::Outer,
