@@ -588,29 +588,5 @@ pub mod parsing {
             })
         ));
     }
-
-    impl Synom for BareFnArg {
-        named!(parse -> Self, do_parse!(
-            name: option!(do_parse!(
-                name: syn!(BareFnArgName) >>
-                not!(syn!(Colon2)) >>
-                colon: syn!(Colon) >>
-                (name, colon)
-            )) >>
-            ty: syn!(Ty) >>
-            (BareFnArg {
-                name: name,
-                ty: ty,
-            })
-        ));
-    }
-
-    impl Synom for BareFnArgName {
-        named!(parse -> Self, alt!(
-            map!(syn!(Ident), BareFnArgName::Named)
-            |
-            map!(syn!(Underscore), BareFnArgName::Wild)
-        ));
-    }
 }
 
