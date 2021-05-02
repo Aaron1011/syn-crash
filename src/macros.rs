@@ -3,10 +3,7 @@ macro_rules! ast_struct {
         $(#[$attr:meta])*
         pub struct $name:ident #full $($rest:tt)*
     ) => {
-        #[cfg(not(feature = "full"))]
         $(#[$attr])*
-        #[cfg_attr(feature = "extra-traits", derive(Debug, Eq, PartialEq, Hash))]
-        #[cfg_attr(feature = "clone-impls", derive(Clone))]
         pub struct $name {
             _noconstruct: (),
         }
@@ -17,8 +14,6 @@ macro_rules! ast_struct {
         pub struct $name:ident $($rest:tt)*
     ) => {
         $(#[$attr])*
-        #[cfg_attr(feature = "extra-traits", derive(Debug, Eq, PartialEq, Hash))]
-        #[cfg_attr(feature = "clone-impls", derive(Clone))]
         pub struct $name $($rest)*
     };
 }
@@ -29,8 +24,6 @@ macro_rules! ast_enum {
         pub enum $name:ident { $($variants:tt)* }
     ) => (
         $(#[$enum_attr])*
-        #[cfg_attr(feature = "extra-traits", derive(Debug, Eq, PartialEq, Hash))]
-        #[cfg_attr(feature = "clone-impls", derive(Clone))]
         pub enum $name {
             $($variants)*
         }
