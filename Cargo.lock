@@ -152,16 +152,16 @@ dependencies = [
 [[package]]
 name = "quote"
 version = "0.3.15"
-source = "git+https://github.com/dtolnay/quote#67a9d9ff867ce002cd7d488ce5fe0076781f4bb1"
-dependencies = [
- "proc-macro2",
-]
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7a6e920b65c65f10b2ae65c831a81a073a89edd28c7cce89475bff467ab4167a"
 
 [[package]]
 name = "quote"
 version = "0.3.15"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a6e920b65c65f10b2ae65c831a81a073a89edd28c7cce89475bff467ab4167a"
+source = "git+https://github.com/dtolnay/quote#67a9d9ff867ce002cd7d488ce5fe0076781f4bb1"
+dependencies = [
+ "proc-macro2",
+]
 
 [[package]]
 name = "rand"
