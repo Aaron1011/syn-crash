@@ -4,10 +4,6 @@ use super::*;
 ast_enum_of_structs! {
     /// The different kinds of types recognized by the compiler
     pub enum Ty {
-        /// A bare function (e.g. `fn(usize) -> bool`)
-        pub BareFn(TyBareFn {
-            pub ty: Box<BareFnTy>,
-        }),
         /// A tuple (`(A, B, C, D, ...)`)
         pub Tup(TyTup {
             pub paren_token: tokens::Paren,
