@@ -23,61 +23,6 @@ ast_struct! {
 }
 
 ast_enum_of_structs! {
-    /// A compile-time attribute item.
-    ///
-    /// E.g. `#[test]`, `#[derive(..)]` or `#[feature = "foo"]`
-    pub enum MetaItem {
-        /// Term meta item.
-        ///
-        /// E.g. `test` as in `#[test]`
-        pub Term(Ident),
-
-        /// List meta item.
-        ///
-        /// E.g. `derive(..)` as in `#[derive(..)]`
-        pub List(MetaItemList {
-            /// Name of this attribute.
-            ///
-            /// E.g. `derive` in `#[derive(..)]`
-            pub ident: Ident,
-
-            pub paren_token: tokens::Paren,
-
-            /// Arguments to this attribute
-            ///
-            /// E.g. `..` in `#[derive(..)]`
-            pub nested: Delimited<NestedMetaItem, tokens::Comma>,
-        }),
-
-        /// Name-value meta item.
-        ///
-        /// E.g. `feature = "foo"` as in `#[feature = "foo"]`
-        pub NameValue(MetaNameValue {
-            /// Name of this attribute.
-            ///
-            /// E.g. `feature` in `#[feature = "foo"]`
-            pub ident: Ident,
-
-            pub eq_token: tokens::Eq,
-        }),
-    }
-}
-
-impl MetaItem {
-    /// Name of the item.
-    ///
-    /// E.g. `test` as in `#[test]`, `derive` as in `#[derive(..)]`, and
-    /// `feature` as in `#[feature = "foo"]`.
-    pub fn name(&self) -> &str {
-        match *self {
-            MetaItem::Term(ref name) => name.as_ref(),
-            MetaItem::NameValue(ref pair) => pair.ident.as_ref(),
-            MetaItem::List(ref list) => list.ident.as_ref(),
-        }
-    }
-}
-
-ast_enum_of_structs! {
     /// Possible values inside of compile-time attribute lists.
     ///
     /// E.g. the '..' in `#[name(..)]`.
@@ -85,7 +30,7 @@ ast_enum_of_structs! {
         /// A full `MetaItem`.
         ///
         /// E.g. `Copy` in `#[derive(Copy)]` would be a `MetaItem::Term(Ident::from("Copy"))`.
-        pub MetaItem(MetaItem),
+        pub MetaItem(bool),
     }
 }
 

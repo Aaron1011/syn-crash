@@ -17,8 +17,8 @@ extern crate synom;
 mod macros;
 
 mod attr;
-pub use attr::{Attribute, MetaItem, NestedMetaItem, MetaItemList,
-               MetaNameValue};
+pub use attr::{Attribute, NestedMetaItem
+               };
 
 
 mod generics;
