@@ -62,8 +62,3 @@ pub use synom::ParseError;
 
 #[cfg(feature = "parsing")]
 use synom::{Synom, SynomBuffer};
-
-
-#[cfg(feature = "printing")]
-struct TokensOrDefault<'a, T: 'a>(&'a Option<T>);
-
