@@ -28,116 +28,6 @@ ast_enum_of_structs! {
 }
 
 ast_struct! {
-    /// A "Path" is essentially Rust's notion of a name.
-    ///
-    /// It's represented as a sequence of identifiers,
-    /// along with a bunch of supporting information.
-    ///
-    /// E.g. `std::cmp::PartialEq`
-    pub struct Path {
-        /// A `::foo` path, is relative to the crate root rather than current
-        /// module (like paths in an import).
-        pub leading_colon: Option<tokens::Colon2>,
-        /// The segments in the path: the things separated by `::`.
-        pub segments: Delimited<PathSegment, tokens::Colon2>,
-    }
-}
-
-impl Path {
-    pub fn global(&self) -> bool {
-        self.leading_colon.is_some()
-    }
-}
-
-
-impl<T> From<T> for Path
-    where T: Into<PathSegment>
-{
-    fn from(segment: T) -> Self {
-        Path {
-            leading_colon: None,
-            segments: vec![(segment.into(), None)].into(),
-        }
-    }
-}
-
-ast_struct! {
-    /// A segment of a path: an identifier, an optional lifetime, and a set of types.
-    ///
-    /// E.g. `std`, `String` or `Box<T>`
-    pub struct PathSegment {
-        /// The identifier portion of this path segment.
-        pub ident: Ident,
-        /// Type/lifetime parameters attached to this path. They come in
-        /// two flavors: `Path<A,B,C>` and `Path(A,B) -> C`. Note that
-        /// this is more than just simple syntactic sugar; the use of
-        /// parens affects the region binding rules, so we preserve the
-        /// distinction.
-        pub parameters: PathParameters,
-    }
-}
-
-impl<T> From<T> for PathSegment
-    where T: Into<Ident>
-{
-    fn from(ident: T) -> Self {
-        PathSegment {
-            ident: ident.into(),
-            parameters: PathParameters::None,
-        }
-    }
-}
-
-ast_enum! {
-    /// Parameters of a path segment.
-    ///
-    /// E.g. `<A, B>` as in `Foo<A, B>` or `(A, B)` as in `Foo(A, B)`
-    pub enum PathParameters {
-        None,
-        /// The `<'a, A, B, C>` in `foo::bar::baz::<'a, A, B, C>`
-        AngleBracketed(AngleBracketedParameterData),
-        /// The `(A, B)` and `C` in `Foo(A, B) -> C`
-        Parenthesized(ParenthesizedParameterData),
-    }
-}
-
-impl Default for PathParameters {
-    fn default() -> Self {
-        PathParameters::None
-    }
-}
-
-impl PathParameters {
-    pub fn is_empty(&self) -> bool {
-        match *self {
-            PathParameters::None => true,
-            PathParameters::AngleBracketed(ref bracketed) => {
-                bracketed.lifetimes.is_empty() && bracketed.types.is_empty() &&
-                bracketed.bindings.is_empty()
-            }
-            PathParameters::Parenthesized(_) => false,
-        }
-    }
-}
-
-ast_struct! {
-    /// A path like `Foo<'a, T>`
-    pub struct AngleBracketedParameterData {
-        pub turbofish: Option<tokens::Colon2>,
-        pub lt_token: tokens::Lt,
-        /// The lifetime parameters for this path segment.
-        pub lifetimes: Delimited<Lifetime, tokens::Comma>,
-        /// The type parameters for this path segment, if present.
-        pub types: Delimited<Ty, tokens::Comma>,
-        /// Bindings (equality constraints) on associated types, if present.
-        ///
-        /// E.g., `Foo<A=Bar>`.
-        pub bindings: Delimited<TypeBinding, tokens::Comma>,
-        pub gt_token: tokens::Gt,
-    }
-}
-
-ast_struct! {
     /// Bind a type to an associated type: `A=Foo`.
     pub struct TypeBinding {
         pub ident: Ident,
@@ -162,8 +52,6 @@ ast_struct! {
     pub struct PolyTraitRef {
         /// The `for<'a>` in `for<'a> Foo<&'a T>`
         pub bound_lifetimes: Option<BoundLifetimes>,
-        /// The `Foo<&'a T>` in `<'a> Foo<&'a T>`
-        pub trait_ref: Path,
     }
 }
 
@@ -318,29 +206,6 @@ pub mod parsing {
     }
 
     named!(ty_no_eq_after -> Ty, terminated!(syn!(Ty), not!(syn!(Eq))));
-
-    impl Path {
-        named!(pub parse_mod_style -> Self, do_parse!(
-            colon: option!(syn!(Colon2)) >>
-            segments: call!(Delimited::parse_separated_nonempty_with,
-                            mod_style_path_segment) >>
-            (Path {
-                leading_colon: colon,
-                segments: segments,
-            })
-        ));
-    }
-
-    named!(mod_style_path_segment -> PathSegment, alt!(
-        map!(syn!(Ident), Into::into)
-        |
-        alt!(
-            syn!(Super) => { Into::into }
-            |
-            syn!(Self_) => { Into::into }
-            |
-            syn!(CapSelf) => { Into::into }
-        )
-    ));
 }
+
 
