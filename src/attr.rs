@@ -183,45 +183,6 @@ pub mod parsing {
     }
 
     impl Attribute {
-        #[cfg(feature = "full")]
-        named!(pub parse_inner -> Self, alt!(
-            do_parse!(
-                pound: syn!(Pound) >>
-                bang: syn!(Bang) >>
-                path_and_tts: brackets!(tuple!(
-                    call!(::Path::parse_mod_style),
-                    call!(::TokenTree::parse_list)
-                )) >>
-                ({
-                    let ((path, tts), bracket) = path_and_tts;
-
-                    Attribute {
-                        style: AttrStyle::Inner(bang),
-                        path: path,
-                        tts: tts,
-                        is_sugared_doc: false,
-                        pound_token: pound,
-                        bracket_token: bracket,
-                    }
-                })
-            )
-            |
-            map!(
-                lit_doc_comment,
-                |lit| Attribute {
-                    style: AttrStyle::Inner(tokens::Bang::default()),
-                    path: "doc".into(),
-                    tts: vec![
-                        ::TokenTree(eq()),
-                        ::TokenTree(lit),
-                    ],
-                    is_sugared_doc: true,
-                    pound_token: tokens::Pound::default(),
-                    bracket_token: tokens::Bracket::default(),
-                }
-            )
-        ));
-
         named!(pub parse_outer -> Self, alt!(
             do_parse!(
                 pound: syn!(Pound) >>
