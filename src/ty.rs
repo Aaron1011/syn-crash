@@ -75,8 +75,6 @@ ast_enum_of_structs! {
         pub Infer(TyInfer {
             pub underscore_token: tokens::Underscore
         }),
-        /// A macro in the type position.
-        pub Mac(Mac),
     }
 }
 

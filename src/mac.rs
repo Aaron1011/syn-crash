@@ -5,14 +5,6 @@ use super::*;
 
 use proc_macro2::{TokenNode, Delimiter};
 
-ast_struct! {
-    /// Represents a macro invocation. The Path indicates which macro
-    /// is being invoked, and the vector of token-trees contains the source
-    /// of the macro invocation.
-    pub struct Mac {
-    }
-}
-
 pub struct TokenTree(pub proc_macro2::TokenTree);
 
 #[cfg(feature = "parsing")]

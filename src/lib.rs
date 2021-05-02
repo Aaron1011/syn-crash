@@ -36,7 +36,7 @@ mod lit;
 pub use lit::{Lit, };
 
 mod mac;
-pub use mac::{Mac, TokenTree};
+pub use mac::{TokenTree};
 
 mod ty;
 pub use ty::{AngleBracketedParameterData, BareFnArg, BareFnArgName, BareFnTy,
