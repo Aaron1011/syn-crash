@@ -167,24 +167,3 @@ pub mod parsing {
         }
     }
 }
-
-#[cfg(feature = "printing")]
-mod printing {
-    use super::*;
-    use quote::{Tokens, ToTokens};
-
-    impl ToTokens for Mac {
-        fn to_tokens(&self, tokens: &mut Tokens) {
-            self.path.to_tokens(tokens);
-            self.bang_token.to_tokens(tokens);
-            self.ident.to_tokens(tokens);
-            tokens.append_all(&self.tokens);
-        }
-    }
-
-    impl ToTokens for TokenTree {
-        fn to_tokens(&self, tokens: &mut Tokens) {
-            self.0.to_tokens(tokens);
-        }
-    }
-}

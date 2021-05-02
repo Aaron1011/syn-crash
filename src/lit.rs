@@ -141,7 +141,6 @@ mod printing {
 
     impl ToTokens for Lit {
         fn to_tokens(&self, tokens: &mut Tokens) {
-            self.clone().into_token_tree().to_tokens(tokens)
         }
     }
 }

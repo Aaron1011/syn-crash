@@ -206,66 +206,31 @@ mod printing {
 
     impl ToTokens for Variant {
         fn to_tokens(&self, tokens: &mut Tokens) {
-            tokens.append_all(&self.attrs);
-            self.ident.to_tokens(tokens);
-            self.data.to_tokens(tokens);
         }
     }
 
     impl ToTokens for VariantData {
         fn to_tokens(&self, tokens: &mut Tokens) {
-            match *self {
-                VariantData::Struct(ref fields, ref brace) => {
-                    brace.surround(tokens, |tokens| {
-                        fields.to_tokens(tokens);
-                    });
-                }
-                VariantData::Tuple(ref fields, ref paren) => {
-                    paren.surround(tokens, |tokens| {
-                        fields.to_tokens(tokens);
-                    });
-                }
-                VariantData::Unit => {}
-            }
         }
     }
 
     impl ToTokens for Field {
         fn to_tokens(&self, tokens: &mut Tokens) {
-            tokens.append_all(&self.attrs);
-            self.vis.to_tokens(tokens);
-            if let Some(ref ident) = self.ident {
-                ident.to_tokens(tokens);
-                TokensOrDefault(&self.colon_token).to_tokens(tokens);
-            }
-            self.ty.to_tokens(tokens);
         }
     }
 
     impl ToTokens for VisPublic {
         fn to_tokens(&self, tokens: &mut Tokens) {
-            self.pub_token.to_tokens(tokens)
         }
     }
 
     impl ToTokens for VisCrate {
         fn to_tokens(&self, tokens: &mut Tokens) {
-            self.pub_token.to_tokens(tokens);
-            self.paren_token.surround(tokens, |tokens| {
-                self.crate_token.to_tokens(tokens);
-            })
         }
     }
 
     impl ToTokens for VisRestricted {
         fn to_tokens(&self, tokens: &mut Tokens) {
-            self.pub_token.to_tokens(tokens);
-            self.paren_token.surround(tokens, |tokens| {
-                // XXX: If we have a path which is not "self" or "super",
-                // automatically add the "in" token.
-                self.in_token.to_tokens(tokens);
-                self.path.to_tokens(tokens);
-            });
         }
     }
 

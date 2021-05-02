@@ -92,12 +92,7 @@ macro_rules! generate_to_tokens {
         #[cfg(feature = "printing")]
         impl ::quote::ToTokens for $name {
             fn to_tokens(&self, tokens: &mut ::quote::Tokens) {
-                match *self {
-                    $(
-                        $name::$variant(ref _e) =>
-                            to_tokens_call!(_e, tokens, $($rest)*),
-                    )*
-                }
+
             }
         }
     );

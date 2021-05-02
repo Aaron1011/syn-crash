@@ -406,27 +406,6 @@ mod printing {
 
     impl ToTokens for Attribute {
         fn to_tokens(&self, tokens: &mut Tokens) {
-            // If this was a sugared doc, emit it in its original form instead of `#[doc = "..."]`
-            if self.is_sugared_doc {
-                if let Some(MetaItem::NameValue(ref pair)) = self.meta_item() {
-                    if pair.ident == "doc" {
-                        let value = pair.lit.value.to_string();
-                        if value.starts_with('/') {
-                            pair.lit.to_tokens(tokens);
-                            return
-                        }
-                    }
-                }
-            }
-
-            self.pound_token.to_tokens(tokens);
-            if let AttrStyle::Inner(ref b) = self.style {
-                b.to_tokens(tokens);
-            }
-            self.bracket_token.surround(tokens, |tokens| {
-                self.path.to_tokens(tokens);
-                tokens.append_all(&self.tts);
-            });
         }
     }
 
