@@ -53,9 +53,6 @@ pub use lit::{Lit, LitKind};
 mod mac;
 pub use mac::{Mac, TokenTree};
 
-mod derive;
-pub use derive::{Body, DeriveInput, BodyEnum, BodyStruct};
-
 mod op;
 pub use op::{BinOp, UnOp};
 
