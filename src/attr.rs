@@ -106,11 +106,6 @@ ast_enum_of_structs! {
         ///
         /// E.g. `Copy` in `#[derive(Copy)]` would be a `MetaItem::Term(Ident::from("Copy"))`.
         pub MetaItem(MetaItem),
-
-        /// A Rust literal.
-        ///
-        /// E.g. `"name"` in `#[rename("name")]`.
-        pub Literal(Lit),
     }
 }
 
