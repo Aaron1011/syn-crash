@@ -8,9 +8,6 @@ use proc_macro2::{self, Delimiter, TokenNode, Spacing};
 ast_struct! {
     /// Doc-comments are promoted to attributes that have `is_sugared_doc` = true
     pub struct Attribute {
-        pub pound_token: tokens::Pound,
-        pub bracket_token: tokens::Bracket,
-
         /// The path of the attribute.
         ///
         /// E.g. `derive` in `#[derive(Copy)]`
@@ -22,8 +19,6 @@ ast_struct! {
         /// E.g. `( Copy )` in `#[derive(Copy)]`
         /// E.g. `x < 5` in `#[crate::precondition x < 5]`
         pub tts: Vec<TokenTree>,
-
-        pub is_sugared_doc: bool,
     }
 }
 
@@ -114,14 +109,11 @@ pub mod parsing {
             do_parse!(
                 pound: syn!(Pound) >>
                 ({
-                    let ((path, tts), bracket) = panic!();
+                    let ((path, tts)) = panic!();
 
                     Attribute {
                         path: path,
                         tts: tts,
-                        is_sugared_doc: false,
-                        pound_token: pound,
-                        bracket_token: bracket,
                     }
                 })
             )
@@ -134,9 +126,6 @@ pub mod parsing {
                         ::TokenTree(eq()),
                         ::TokenTree(lit),
                     ],
-                    is_sugared_doc: true,
-                    pound_token: tokens::Pound::default(),
-                    bracket_token: tokens::Bracket::default(),
                 }
             )
         ));
