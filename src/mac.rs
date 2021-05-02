@@ -10,11 +10,6 @@ ast_struct! {
     /// is being invoked, and the vector of token-trees contains the source
     /// of the macro invocation.
     pub struct Mac {
-        pub path: Path,
-        pub bang_token: tokens::Bang,
-        /// The `example` in `macro_rules! example { ... }`.
-        pub ident: Option<Ident>,
-        pub tokens: Vec<TokenTree>,
     }
 }
 
@@ -34,10 +29,6 @@ pub mod parsing {
             bang: syn!(Bang) >>
             body: call!(::TokenTree::parse_delimited) >>
             (Mac {
-                path: what,
-                bang_token: bang,
-                ident: None,
-                tokens: vec![body],
             })
         ));
     }
