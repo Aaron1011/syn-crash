@@ -20,9 +20,5 @@ pub mod parsing {
         pub fn parse_list(input: Cursor) -> PResult<Vec<Self>> {
             parse_error()
         }
-
-        pub fn parse_delimited(input: Cursor) -> PResult<Self> {
-            parse_error()
-        }
     }
 }
