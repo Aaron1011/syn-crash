@@ -38,9 +38,6 @@ pub use lit::{Lit, LitKind};
 mod mac;
 pub use mac::{Mac, TokenTree};
 
-mod op;
-pub use op::{BinOp, UnOp};
-
 mod ty;
 pub use ty::{Abi, AbiKind, AngleBracketedParameterData, BareFnArg, BareFnArgName, BareFnTy,
              FunctionRetTy, MutTy, Mutability, ParenthesizedParameterData, Path,
