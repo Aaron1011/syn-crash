@@ -33,7 +33,7 @@ mod lifetime;
 pub use lifetime::Lifetime;
 
 mod lit;
-pub use lit::{Lit, LitKind};
+pub use lit::{Lit, };
 
 mod mac;
 pub use mac::{Mac, TokenTree};

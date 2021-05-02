@@ -7,14 +7,6 @@ use {Span, TokenTree};
 
 #[derive(Clone)]
 pub struct Lit {
-    pub value: LitKind,
-    pub span: Span,
-}
-
-#[derive(Clone)]
-pub enum LitKind {
-    Bool(bool),
-    Other(Literal),
 }
 
 #[cfg(feature = "parsing")]
