@@ -22,19 +22,6 @@ ast_struct! {
     }
 }
 
-ast_enum_of_structs! {
-    /// Possible values inside of compile-time attribute lists.
-    ///
-    /// E.g. the '..' in `#[name(..)]`.
-    pub enum NestedMetaItem {
-        /// A full `MetaItem`.
-        ///
-        /// E.g. `Copy` in `#[derive(Copy)]` would be a `MetaItem::Term(Ident::from("Copy"))`.
-        pub MetaItem(bool),
-    }
-}
-
-
 #[cfg(feature = "parsing")]
 pub mod parsing {
     use super::*;
