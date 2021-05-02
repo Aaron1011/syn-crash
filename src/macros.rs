@@ -78,24 +78,7 @@ macro_rules! ast_enum_of_structs {
             }
         )*
 
-        generate_to_tokens! {
-            $($remaining)*
-            enum $name { $($variant [$($rest)*],)* }
-        }
     )
-}
-
-macro_rules! generate_to_tokens {
-    (do_not_generate_to_tokens $($foo:tt)*) => ();
-
-    (enum $name:ident { $($variant:ident [$($rest:tt)*],)* }) => (
-        /*#[cfg(feature = "printing")]
-        impl ::quote::ToTokens for $name {
-            fn to_tokens(&self, tokens: &mut ::quote::Tokens) {
-
-            }
-        }*/
-    );
 }
 
 
