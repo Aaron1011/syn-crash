@@ -465,14 +465,6 @@ pub mod parsing {
         ));
     }
 
-    impl Synom for Mutability {
-        named!(parse -> Self, alt!(
-            syn!(Mut) => { Mutability::Mutable }
-            |
-            epsilon!() => { |_| Mutability::Immutable }
-        ));
-    }
-
     impl Synom for Path {
         named!(parse -> Self, do_parse!(
             colon: option!(syn!(Colon2)) >>
