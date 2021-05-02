@@ -14,7 +14,6 @@ ast_enum_of_structs! {
             pub bracket_token: tokens::Bracket,
             pub ty: Box<Ty>,
             pub semi_token: tokens::Semi,
-            pub amt: Expr,
         }),
         /// A raw pointer (`*const T` or `*mut T`)
         pub Ptr(TyPtr {
@@ -404,13 +403,11 @@ pub mod parsing {
             brackets!(do_parse!(
                 elem: syn!(Ty) >>
                     semi: syn!(Semi) >>
-                    len: syn!(Expr) >>
-                    (elem, semi, len)
+                    (elem, semi, ())
             )),
             |((elem, semi, len), brackets)| {
                 TyArray {
                     ty: Box::new(elem),
-                    amt: len,
                     bracket_token: brackets,
                     semi_token: semi,
                 }
@@ -855,7 +852,6 @@ mod printing {
             self.bracket_token.surround(tokens, |tokens| {
                 self.ty.to_tokens(tokens);
                 self.semi_token.to_tokens(tokens);
-                self.amt.to_tokens(tokens);
             });
         }
     }

@@ -24,16 +24,6 @@ mod data;
 pub use data::{Field, Variant, VariantData, Visibility, VisRestricted, VisCrate,
                VisPublic, VisInherited};
 
-mod expr;
-pub use expr::{Expr, ExprKind, ExprBox, ExprInPlace, ExprArray, ExprCall,
-               ExprMethodCall, ExprTup, ExprBinary, ExprUnary, ExprCast,
-               ExprType, ExprIf, ExprIfLet, ExprWhile, ExprWhileLet,
-               ExprForLoop, ExprLoop, ExprMatch, ExprClosure, ExprBlock,
-               ExprAssign, ExprAssignOp, ExprField, ExprTupField, ExprIndex,
-               ExprRange, ExprPath, ExprAddrOf, ExprBreak, ExprContinue,
-               ExprRet, ExprStruct, ExprRepeat, ExprParen, ExprTry, ExprCatch,
-               ExprGroup, ExprYield};
-
 mod generics;
 pub use generics::{Generics, LifetimeDef, TraitBoundModifier, TyParam, TyParamBound,
                    WhereBoundPredicate, WhereClause, WhereEqPredicate, WherePredicate,
