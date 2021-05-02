@@ -398,31 +398,3 @@ pub mod parsing {
         }
     }
 }
-
-#[cfg(feature = "printing")]
-mod printing {
-    use super::*;
-    use quote::{Tokens, ToTokens};
-
-    impl ToTokens for Attribute {
-        fn to_tokens(&self, tokens: &mut Tokens) {
-        }
-    }
-
-    impl ToTokens for MetaItemList {
-        fn to_tokens(&self, tokens: &mut Tokens) {
-            self.ident.to_tokens(tokens);
-            self.paren_token.surround(tokens, |tokens| {
-                self.nested.to_tokens(tokens);
-            })
-        }
-    }
-
-    impl ToTokens for MetaNameValue {
-        fn to_tokens(&self, tokens: &mut Tokens) {
-            self.ident.to_tokens(tokens);
-            self.eq_token.to_tokens(tokens);
-            self.lit.to_tokens(tokens);
-        }
-    }
-}
