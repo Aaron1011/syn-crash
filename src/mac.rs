@@ -44,16 +44,11 @@ pub mod parsing {
 
     impl ::TokenTree {
         pub fn parse_list(input: Cursor) -> PResult<Vec<Self>> {
-            Ok((Cursor::empty(), input.token_stream().into_iter().map(::TokenTree).collect()))
+            parse_error()
         }
 
         pub fn parse_delimited(input: Cursor) -> PResult<Self> {
-            match input.token_tree() {
-                Some((rest, token @ TokenTree { kind: TokenNode::Group(..), .. })) => {
-                    Ok((rest, ::TokenTree(token)))
-                }
-                _ => parse_error(),
-            }
+            parse_error()
         }
     }
 }
