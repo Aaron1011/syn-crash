@@ -30,31 +30,6 @@ pub mod parsing {
         }
     }
 
-    impl Attribute {
-        named!(pub parse_outer -> Self, alt!(
-            do_parse!(
-                pound: syn!(Pound) >>
-                ({
-                    let tts = panic!();
-
-                    Attribute {
-                        tts: tts,
-                    }
-                })
-            )
-            |
-            map!(
-                lit_doc_comment,
-                |lit| Attribute {
-                    tts: vec![
-                        ::TokenTree(eq()),
-                        ::TokenTree(lit),
-                    ],
-                }
-            )
-        ));
-    }
-
     fn lit_doc_comment(input: Cursor) -> PResult<TokenTree> {
         parse_error()
     }
