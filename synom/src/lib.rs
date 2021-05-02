@@ -751,12 +751,7 @@ macro_rules! do_parse {
     };
 
     ($i:expr, $submac:ident!( $($args:tt)* ) >> $($rest:tt)*) => {
-        match $submac!($i, $($args)*) {
-            ::std::result::Result::Err(err) =>
-                ::std::result::Result::Err(err),
-            ::std::result::Result::Ok((i, _)) =>
-                do_parse!(i, $($rest)*),
-        }
+        panic!()
     };
 
     ($i:expr, $field:ident : $e:ident >> $($rest:tt)*) => {
