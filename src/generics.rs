@@ -195,31 +195,6 @@ pub mod parsing {
     use synom::Synom;
     use synom::tokens::*;
 
-    impl Synom for Generics {
-        named!(parse -> Self, map!(
-            alt!(
-                do_parse!(
-                    lt: syn!(Lt) >>
-                    lifetimes: call!(Delimited::parse_terminated) >>
-                    ty_params: cond!(
-                        lifetimes.is_empty() || lifetimes.trailing_delim(),
-                        call!(Delimited::parse_terminated)
-                    ) >>
-                    gt: syn!(Gt) >>
-                    (lifetimes, ty_params, Some(lt), Some(gt))
-                )
-                |
-                epsilon!() => { |_| (Delimited::new(), None, None, None) }
-            ),
-            |(lifetimes, ty_params, lt, gt)| Generics {
-                lifetimes: lifetimes,
-                ty_params: ty_params.unwrap_or_default(),
-                where_clause: WhereClause::default(),
-                gt_token: gt,
-                lt_token: lt,
-            }
-        ));
-    }
 
     impl Synom for LifetimeDef {
         named!(parse -> Self, do_parse!(
