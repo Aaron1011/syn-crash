@@ -17,20 +17,6 @@ pub enum LitKind {
     Other(Literal),
 }
 
-impl Lit {
-    pub fn into_token_tree(self) -> TokenTree {
-        let kind = match self.value {
-            LitKind::Bool(true) => TokenNode::Term(Term::intern("true")),
-            LitKind::Bool(false) => TokenNode::Term(Term::intern("false")),
-            LitKind::Other(l) => TokenNode::Literal(l),
-        };
-        TokenTree(proc_macro2::TokenTree {
-            span: self.span.0,
-            kind: kind,
-        })
-    }
-}
-
 #[cfg(feature = "parsing")]
 pub mod parsing {
     use super::*;
