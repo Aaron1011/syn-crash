@@ -8,10 +8,6 @@ ast_enum_of_structs! {
         pub BareFn(TyBareFn {
             pub ty: Box<BareFnTy>,
         }),
-        /// The never type (`!`)
-        pub Never(TyNever {
-            pub bang_token: tokens::Bang,
-        }),
         /// A tuple (`(A, B, C, D, ...)`)
         pub Tup(TyTup {
             pub paren_token: tokens::Paren,
@@ -29,12 +25,6 @@ ast_enum_of_structs! {
         /// A trait object type `Bound1 + Bound2 + Bound3`
         /// where `Bound` is a trait or a lifetime.
         pub TraitObject(TyTraitObject {
-            pub bounds: Delimited<TyParamBound, tokens::Add>,
-        }),
-        /// An `impl Bound1 + Bound2 + Bound3` type
-        /// where `Bound` is a trait or a lifetime.
-        pub ImplTrait(TyImplTrait {
-            pub impl_token: tokens::Impl,
             pub bounds: Delimited<TyParamBound, tokens::Add>,
         }),
         /// No-op; kept solely so that we can pretty-print faithfully
@@ -314,13 +304,6 @@ pub mod parsing {
         syn!(TyGroup) => { Ty::Group }
     ));
 
-    impl Synom for TyNever {
-        named!(parse -> Self, map!(
-            syn!(Bang),
-            |b| TyNever { bang_token: b }
-        ));
-    }
-
     impl Synom for TyInfer {
         named!(parse -> Self, map!(
             syn!(Underscore),
@@ -461,19 +444,6 @@ pub mod parsing {
             |x| TyTraitObject { bounds: vec![x].into() }.into()
         }
     ));
-
-    impl Synom for TyImplTrait {
-        named!(parse -> Self, do_parse!(
-            impl_: syn!(Impl) >>
-            // NOTE: rust-lang/rust#34511 includes discussion about whether or
-            // not + should be allowed in ImplTrait directly without ().
-            elem: call!(Delimited::parse_separated_nonempty) >>
-            (TyImplTrait {
-                impl_token: impl_,
-                bounds: elem,
-            })
-        ));
-    }
 
     impl Synom for TyGroup {
         named!(parse -> Self, do_parse!(
