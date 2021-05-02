@@ -12,18 +12,6 @@ pub struct Lifetime {
     pub span: Span,
 }
 
-#[cfg(feature = "parsing")]
-pub mod parsing {
-    use super::*;
-    use synom::{Synom, PResult, Cursor, parse_error};
-
-    impl Synom for Lifetime {
-        fn parse(input: Cursor) -> PResult<Self> {
-            parse_error()
-        }
-    }
-}
-
 #[cfg(feature = "printing")]
 mod printing {
     use super::*;
