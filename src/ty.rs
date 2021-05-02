@@ -27,20 +27,10 @@ ast_enum_of_structs! {
         pub TraitObject(TyTraitObject {
             pub bounds: Delimited<TyParamBound, tokens::Add>,
         }),
-        /// No-op; kept solely so that we can pretty-print faithfully
-        pub Paren(TyParen {
-            pub paren_token: tokens::Paren,
-            pub ty: Box<Ty>,
-        }),
         /// No-op: kept solely so that we can pretty-print faithfully
         pub Group(TyGroup {
             pub group_token: tokens::Group,
             pub ty: Box<Ty>,
-        }),
-        /// TyKind::Infer means the type should be inferred instead of it having been
-        /// specified. This can appear anywhere in a type.
-        pub Infer(TyInfer {
-            pub underscore_token: tokens::Underscore
         }),
     }
 }
@@ -304,13 +294,6 @@ pub mod parsing {
         syn!(TyGroup) => { Ty::Group }
     ));
 
-    impl Synom for TyInfer {
-        named!(parse -> Self, map!(
-            syn!(Underscore),
-            |u| TyInfer { underscore_token: u }
-        ));
-    }
-
     impl Synom for TyTup {
         named!(parse -> Self, do_parse!(
             data: parens!(call!(Delimited::parse_terminated)) >>
@@ -352,16 +335,6 @@ pub mod parsing {
             data: grouped!(syn!(Ty)) >>
             (TyGroup {
                 group_token: data.1,
-                ty: Box::new(data.0),
-            })
-        ));
-    }
-
-    impl Synom for TyParen {
-        named!(parse -> Self, do_parse!(
-            data: parens!(syn!(Ty)) >>
-            (TyParen {
-                paren_token: data.1,
                 ty: Box::new(data.0),
             })
         ));

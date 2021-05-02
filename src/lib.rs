@@ -42,7 +42,7 @@ pub use ty::{AngleBracketedParameterData, BareFnArg, BareFnArgName, BareFnTy,
              FunctionRetTy, MutTy, Mutability, ParenthesizedParameterData, Path,
              PathParameters, PathSegment, PolyTraitRef, QSelf, Ty, TypeBinding, Unsafety,
              TyBareFn, TyPath,
-             TyTraitObject, TyParen, TyInfer, TyGroup};
+             TyTraitObject, TyGroup};
 
 pub use synom::span::Span;
 pub use synom::tokens;
