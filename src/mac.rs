@@ -20,24 +20,6 @@ ast_struct! {
 
 pub struct TokenTree(pub proc_macro2::TokenTree);
 
-impl Mac {
-    pub fn is_braced(&self) -> bool {
-        match self.tokens.last() {
-            Some(t) => t.is_braced(),
-            None => false,
-        }
-    }
-}
-
-impl TokenTree {
-    pub fn is_braced(&self) -> bool {
-        match self.0.kind {
-            TokenNode::Group(Delimiter::Brace, _) => true,
-            _ => false,
-        }
-    }
-}
-
 #[cfg(feature = "parsing")]
 pub mod parsing {
     use super::*;
