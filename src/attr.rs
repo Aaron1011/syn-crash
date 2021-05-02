@@ -15,22 +15,3 @@ ast_struct! {
         pub tts: Vec<TokenTree>,
     }
 }
-
-#[cfg(feature = "parsing")]
-pub mod parsing {
-    use super::*;
-    use synom::{PResult, Cursor, parse_error};
-    use synom::tokens::*;
-    use proc_macro2::{TokenNode, Spacing, TokenTree};
-
-    fn eq() -> TokenTree {
-        TokenTree {
-            span: Default::default(),
-            kind: TokenNode::Op('=', Spacing::Alone),
-        }
-    }
-
-    fn lit_doc_comment(input: Cursor) -> PResult<TokenTree> {
-        parse_error()
-    }
-}
