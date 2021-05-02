@@ -20,9 +20,6 @@ mod attr;
 pub use attr::{Attribute, AttrStyle, MetaItem, NestedMetaItem, MetaItemList,
                MetaNameValue};
 
-mod data;
-pub use data::{Field, Variant, VariantData, Visibility, VisRestricted, VisCrate,
-               VisPublic, VisInherited};
 
 mod generics;
 pub use generics::{Generics, LifetimeDef, TraitBoundModifier, TyParam, TyParamBound,
