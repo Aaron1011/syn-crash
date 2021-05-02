@@ -214,31 +214,6 @@ pub mod parsing {
         ));
     }
 
-    impl Synom for TyParam {
-        named!(parse -> Self, do_parse!(
-            attrs: many0!(call!(Attribute::parse_outer)) >>
-            id: syn!(Ident) >>
-            colon: option!(syn!(Colon)) >>
-            bounds: cond!(
-                colon.is_some(),
-                call!(Delimited::parse_separated_nonempty)
-            ) >>
-            default: option!(do_parse!(
-                eq: syn!(Eq) >>
-                ty: syn!(Ty) >>
-                (eq, ty)
-            )) >>
-            (TyParam {
-                attrs: attrs,
-                ident: id,
-                bounds: bounds.unwrap_or_default(),
-                colon_token: colon,
-                eq_token: default.as_ref().map(|d| tokens::Eq((d.0).0)),
-                default: default.map(|d| d.1),
-            })
-        ));
-    }
-
     impl Synom for TyParamBound {
         named!(parse -> Self, alt!(
             do_parse!(
