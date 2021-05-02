@@ -149,7 +149,6 @@ ast_struct! {
     #[derive(Default)]
     pub struct WhereClause {
         pub where_token: Option<tokens::Where>,
-        pub predicates: Delimited<WherePredicate, tokens::Comma>,
     }
 }
 
@@ -304,9 +303,7 @@ pub mod parsing {
         named!(parse -> Self, alt!(
             do_parse!(
                 where_: syn!(Where) >>
-                predicates: call!(Delimited::parse_terminated) >>
                 (WhereClause {
-                    predicates: predicates,
                     where_token: Some(where_),
                 })
             )
@@ -317,37 +314,6 @@ pub mod parsing {
         fn description() -> Option<&'static str> {
             Some("where clause")
         }
-    }
-
-    impl Synom for WherePredicate {
-        named!(parse -> Self, alt!(
-            do_parse!(
-                ident: syn!(Lifetime) >>
-                colon: option!(syn!(Colon)) >>
-                bounds: cond!(
-                    colon.is_some(),
-                    call!(Delimited::parse_separated)
-                ) >>
-                (WherePredicate::RegionPredicate(WhereRegionPredicate {
-                    lifetime: ident,
-                    bounds: bounds.unwrap_or_default(),
-                    colon_token: colon,
-                }))
-            )
-            |
-            do_parse!(
-                bound_lifetimes: option!(syn!(BoundLifetimes)) >>
-                bounded_ty: syn!(Ty) >>
-                colon: syn!(Colon) >>
-                bounds: call!(Delimited::parse_separated_nonempty) >>
-                (WherePredicate::BoundPredicate(WhereBoundPredicate {
-                    bound_lifetimes: bound_lifetimes,
-                    bounded_ty: bounded_ty,
-                    bounds: bounds,
-                    colon_token: colon,
-                }))
-            )
-        ));
     }
 }
 
