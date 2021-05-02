@@ -4,29 +4,6 @@ use super::*;
 ast_enum_of_structs! {
     /// The different kinds of types recognized by the compiler
     pub enum Ty {
-        /// A variable-length array (`[T]`)
-        pub Slice(TySlice {
-            pub ty: Box<Ty>,
-            pub bracket_token: tokens::Bracket,
-        }),
-        /// A fixed length array (`[T; n]`)
-        pub Array(TyArray {
-            pub bracket_token: tokens::Bracket,
-            pub ty: Box<Ty>,
-            pub semi_token: tokens::Semi,
-        }),
-        /// A raw pointer (`*const T` or `*mut T`)
-        pub Ptr(TyPtr {
-            pub star_token: tokens::Star,
-            pub const_token: Option<tokens::Const>,
-            pub ty: Box<MutTy>,
-        }),
-        /// A reference (`&'a T` or `&'a mut T`)
-        pub Rptr(TyRptr {
-            pub and_token: tokens::And,
-            pub lifetime: Option<Lifetime>,
-            pub ty: Box<MutTy>,
-        }),
         /// A bare function (e.g. `fn(usize) -> bool`)
         pub BareFn(TyBareFn {
             pub ty: Box<BareFnTy>,
@@ -336,72 +313,6 @@ pub mod parsing {
     named!(ambig_ty(allow_plus: bool) -> Ty, alt!(
         syn!(TyGroup) => { Ty::Group }
     ));
-
-    impl Synom for TySlice {
-        named!(parse -> Self, map!(
-            brackets!(syn!(Ty)),
-            |(ty, b)| TySlice {
-                ty: Box::new(ty),
-                bracket_token: b,
-            }
-        ));
-    }
-
-    impl Synom for TyArray {
-        named!(parse -> Self, map!(
-            brackets!(do_parse!(
-                elem: syn!(Ty) >>
-                    semi: syn!(Semi) >>
-                    (elem, semi, ())
-            )),
-            |((elem, semi, len), brackets)| {
-                TyArray {
-                    ty: Box::new(elem),
-                    bracket_token: brackets,
-                    semi_token: semi,
-                }
-            }
-        ));
-    }
-
-    impl Synom for TyPtr {
-        named!(parse -> Self, do_parse!(
-            star: syn!(Star) >>
-            mutability: alt!(
-                syn!(Const) => { |c| (Mutability::Immutable, Some(c)) }
-                |
-                syn!(Mut) => { |m| (Mutability::Mutable(m), None) }
-            ) >>
-            target: call!(Ty::without_plus) >>
-            (TyPtr {
-                const_token: mutability.1,
-                star_token: star,
-                ty: Box::new(MutTy {
-                    ty: target,
-                    mutability: mutability.0,
-                }),
-            })
-        ));
-    }
-
-    impl Synom for TyRptr {
-        named!(parse -> Self, do_parse!(
-            amp: syn!(And) >>
-            life: option!(syn!(Lifetime)) >>
-            mutability: syn!(Mutability) >>
-            // & binds tighter than +, so we don't allow + here.
-            target: call!(Ty::without_plus) >>
-            (TyRptr {
-                lifetime: life,
-                ty: Box::new(MutTy {
-                    ty: target,
-                    mutability: mutability,
-                }),
-                and_token: amp,
-            })
-        ));
-    }
-
 
     impl Synom for TyNever {
         named!(parse -> Self, map!(
