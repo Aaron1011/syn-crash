@@ -36,21 +36,6 @@ ast_enum_of_structs! {
 }
 
 ast_struct! {
-    pub struct MutTy {
-        pub ty: Ty,
-        pub mutability: Mutability,
-    }
-}
-
-ast_enum! {
-    #[cfg_attr(feature = "clone-impls", derive(Copy))]
-    pub enum Mutability {
-        Mutable(tokens::Mut),
-        Immutable,
-    }
-}
-
-ast_struct! {
     /// A "Path" is essentially Rust's notion of a name.
     ///
     /// It's represented as a sequence of identifiers,
