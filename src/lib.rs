@@ -28,8 +28,6 @@ mod generics;
 pub use generics::{Generics, LifetimeDef, TraitBoundModifier, TyParam, TyParamBound,
                    WhereBoundPredicate, WhereClause, WhereEqPredicate, WherePredicate,
                    WhereRegionPredicate, BoundLifetimes};
-#[cfg(feature = "printing")]
-pub use generics::{ImplGenerics, Turbofish, TyGenerics};
 
 mod ident;
 pub use ident::Ident;
@@ -52,8 +50,6 @@ pub use ty::{Abi, AbiKind, AngleBracketedParameterData, BareFnArg, BareFnArgName
              PathParameters, PathSegment, PolyTraitRef, QSelf, Ty, TypeBinding, Unsafety,
              TySlice, TyArray, TyPtr, TyRptr, TyBareFn, TyNever, TyTup, TyPath,
              TyTraitObject, TyImplTrait, TyParen, TyInfer, TyGroup};
-#[cfg(feature = "printing")]
-pub use ty::PathTokens;
 
 pub use synom::span::Span;
 pub use synom::tokens;
