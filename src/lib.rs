@@ -20,7 +20,6 @@ mod ident;
 pub use ident::Ident;
 
 mod lifetime;
-pub use lifetime::Lifetime;
 
 mod mac;
 pub use mac::{TokenTree};
