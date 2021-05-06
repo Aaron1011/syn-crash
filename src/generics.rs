@@ -6,8 +6,6 @@ ast_struct! {
     /// of a function, enum, trait, etc.
     #[derive(Default)]
     pub struct Generics {
-        pub lt_token: Option<tokens::Lt>,
-        pub gt_token: Option<tokens::Gt>,
         pub lifetimes: Delimited<LifetimeDef, tokens::Comma>,
         pub ty_params: Delimited<(), tokens::Comma>,
     }
