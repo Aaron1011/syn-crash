@@ -34,8 +34,6 @@ ast_struct! {
     /// A lifetime definition, e.g. `'a: 'b+'c+'d`
     pub struct LifetimeDef {
         pub attrs: Vec<Attribute>,
-        pub lifetime: Lifetime,
-        pub colon_token: Option<tokens::Colon>,
         pub bounds: Delimited<Lifetime, tokens::Add>,
     }
 }
@@ -44,8 +42,6 @@ impl LifetimeDef {
     pub fn new(lifetime: Lifetime) -> Self {
         LifetimeDef {
             attrs: Vec::new(),
-            lifetime: lifetime,
-            colon_token: None,
             bounds: Delimited::new(),
         }
     }
