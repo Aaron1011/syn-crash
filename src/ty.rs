@@ -36,33 +36,6 @@ ast_struct! {
     }
 }
 
-ast_enum! {
-    #[cfg_attr(feature = "clone-impls", derive(Copy))]
-    pub enum Unsafety {
-        Unsafe(tokens::Unsafe),
-        Normal,
-    }
-}
-
-ast_struct! {
-    /// An argument in a function type.
-    ///
-    /// E.g. `bar: usize` as in `fn foo(bar: usize)`
-    pub struct BareFnArg {
-        pub name: Option<(BareFnArgName, tokens::Colon)>,
-        pub ty: Ty,
-    }
-}
-
-ast_enum! {
-    /// Names of arguments in the `BareFnArg` structure
-    pub enum BareFnArgName {
-        /// Argument with the provided name
-        Named(Ident),
-        /// Argument matched with `_`
-        Wild(tokens::Underscore),
-    }
-}
 
 #[cfg(feature = "parsing")]
 pub mod parsing {
