@@ -19,13 +19,6 @@ ast_struct! {
 /// Returned by `Generics::split_for_impl`.
 pub struct ImplGenerics<'a>(&'a Generics);
 
-#[cfg(feature = "printing")]
-#[cfg_attr(feature = "extra-traits", derive(Debug, Eq, PartialEq, Hash))]
-#[cfg_attr(feature = "clone-impls", derive(Clone))]
-/// Returned by `Generics::split_for_impl`.
-pub struct TyGenerics<'a>(&'a Generics);
-
-
 ast_struct! {
     /// A set of bound lifetimes, e.g. `for<'a, 'b, 'c>`
     #[derive(Default)]
