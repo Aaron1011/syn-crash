@@ -49,15 +49,6 @@ pub mod parsing {
         }
     }
 
-    impl Ty {
-        /// In some positions, types may not contain the `+` character, to
-        /// disambiguate them. For example in the expression `1 as T`, T may not
-        /// contain a `+` character.
-        ///
-        /// This parser does not allow a `+`, while the default parser does.
-        named!(pub without_plus -> Self, call!(ambig_ty, false));
-    }
-
     named!(ambig_ty(allow_plus: bool) -> Ty, alt!(
         syn!(TyGroup) => { Ty::Group }
     ));
