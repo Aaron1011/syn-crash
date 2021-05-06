@@ -17,13 +17,3 @@ ast_struct! {
         pub bounds: Delimited<Lifetime, tokens::Add>,
     }
 }
-
-ast_enum! {
-    /// The AST represents all type param bounds as types.
-    /// `typeck::collect::compute_bounds` matches these against
-    /// the "special" built-in traits (see `middle::lang_items`) and
-    /// detects Copy, Send and Sync.
-    pub enum TyParamBound {
-        Trait(PolyTraitRef),
-    }
-}
