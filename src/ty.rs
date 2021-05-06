@@ -39,8 +39,6 @@ ast_struct! {
         pub paren_token: tokens::Paren,
         /// `(A, B)`
         pub inputs: Delimited<Ty, tokens::Comma>,
-        /// `C`
-        pub output: FunctionRetTy,
     }
 }
 
@@ -83,7 +81,6 @@ ast_struct! {
         pub paren_token: tokens::Paren,
         pub inputs: Delimited<BareFnArg, tokens::Comma>,
         pub variadic: Option<tokens::Dot3>,
-        pub output: FunctionRetTy,
     }
 }
 
@@ -169,11 +166,9 @@ pub mod parsing {
     impl Synom for ParenthesizedParameterData {
         named!(parse -> Self, do_parse!(
             data: parens!(call!(Delimited::parse_terminated)) >>
-            output: syn!(FunctionRetTy) >>
             (ParenthesizedParameterData {
                 paren_token: data.1,
                 inputs: data.0,
-                output: output,
             })
         ));
     }
