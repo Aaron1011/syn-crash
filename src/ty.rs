@@ -21,16 +21,6 @@ ast_enum_of_structs! {
 }
 
 ast_struct! {
-    /// Bind a type to an associated type: `A=Foo`.
-    pub struct TypeBinding {
-        pub ident: Ident,
-        pub eq_token: tokens::Eq,
-        pub ty: Ty,
-    }
-}
-
-
-ast_struct! {
     /// A path like `Foo(A,B) -> C`
     pub struct ParenthesizedParameterData {
         pub paren_token: tokens::Paren,
