@@ -163,8 +163,6 @@ pub mod parsing {
             })
         ));
     }
-
-    named!(ty_no_eq_after -> Ty, terminated!(syn!(Ty), not!(syn!(Eq))));
 }
 
 
