@@ -36,17 +36,6 @@ ast_struct! {
     }
 }
 
-ast_struct! {
-    pub struct BareFnTy {
-        pub lifetimes: Delimited<LifetimeDef, tokens::Comma>,
-        pub unsafety: Unsafety,
-        pub fn_token: tokens::Fn_,
-        pub paren_token: tokens::Paren,
-        pub inputs: Delimited<BareFnArg, tokens::Comma>,
-        pub variadic: Option<tokens::Dot3>,
-    }
-}
-
 ast_enum! {
     #[cfg_attr(feature = "clone-impls", derive(Copy))]
     pub enum Unsafety {

@@ -34,10 +34,6 @@ mod mac;
 pub use mac::{TokenTree};
 
 mod ty;
-pub use ty::{BareFnArg, BareFnArgName, BareFnTy,
-             ParenthesizedParameterData, 
-             PolyTraitRef, Ty, Unsafety,
-             TyTraitObject, TyGroup};
 
 pub use synom::span::Span;
 pub use synom::tokens;
