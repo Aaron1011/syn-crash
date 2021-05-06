@@ -45,6 +45,5 @@ ast_enum! {
     /// detects Copy, Send and Sync.
     pub enum TyParamBound {
         Trait(PolyTraitRef),
-        Region(Lifetime),
     }
 }
