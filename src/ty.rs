@@ -53,14 +53,6 @@ pub mod parsing {
         syn!(TyGroup) => { Ty::Group }
     ));
 
-    impl Synom for TyTup {
-        named!(parse -> Self, do_parse!(
-            data: parens!(call!(Delimited::parse_terminated)) >>
-            (TyTup {
-                tys: data.0,
-            })
-        ));
-    }
 
     impl Synom for ParenthesizedParameterData {
         named!(parse -> Self, do_parse!(
