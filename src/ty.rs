@@ -32,7 +32,7 @@ ast_struct! {
 ast_struct! {
     pub struct PolyTraitRef {
         /// The `for<'a>` in `for<'a> Foo<&'a T>`
-        pub bound_lifetimes: Option<BoundLifetimes>,
+        pub bound_lifetimes: Delimited<LifetimeDef, tokens::Comma>
     }
 }
 
