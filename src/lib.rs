@@ -22,7 +22,7 @@ pub use attr::{Attribute};
 
 mod generics;
 pub use generics::{Generics, LifetimeDef, TyParamBound,
-                   BoundLifetimes};
+                   };
 
 mod ident;
 pub use ident::Ident;

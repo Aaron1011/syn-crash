@@ -10,15 +10,6 @@ ast_struct! {
         pub ty_params: Delimited<(), tokens::Comma>,
     }
 }
-
-ast_struct! {
-    /// A set of bound lifetimes, e.g. `for<'a, 'b, 'c>`
-    #[derive(Default)]
-    pub struct BoundLifetimes {
-        pub lifetimes: Delimited<LifetimeDef, tokens::Comma>,
-    }
-}
-
 ast_struct! {
     /// A lifetime definition, e.g. `'a: 'b+'c+'d`
     pub struct LifetimeDef {

@@ -38,7 +38,7 @@ ast_struct! {
 
 ast_struct! {
     pub struct BareFnTy {
-        pub lifetimes: Option<BoundLifetimes>,
+        pub lifetimes: Delimited<LifetimeDef, tokens::Comma>,
         pub unsafety: Unsafety,
         pub fn_token: tokens::Fn_,
         pub paren_token: tokens::Paren,
