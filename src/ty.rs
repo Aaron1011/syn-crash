@@ -15,7 +15,6 @@ ast_enum_of_structs! {
         }),
         /// No-op: kept solely so that we can pretty-print faithfully
         pub Group(TyGroup {
-            pub group_token: tokens::Group,
             pub ty: Box<Ty>,
         }),
     }
@@ -160,7 +159,6 @@ pub mod parsing {
         named!(parse -> Self, do_parse!(
             data: grouped!(syn!(Ty)) >>
             (TyGroup {
-                group_token: data.1,
                 ty: Box::new(data.0),
             })
         ));
