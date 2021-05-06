@@ -43,10 +43,6 @@ pub mod parsing {
 
     impl Synom for Ty {
         named!(parse -> Self, call!(ambig_ty, true));
-
-        fn description() -> Option<&'static str> {
-            Some("type")
-        }
     }
 
     named!(ambig_ty(allow_plus: bool) -> Ty, alt!(
