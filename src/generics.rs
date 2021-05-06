@@ -38,15 +38,6 @@ ast_struct! {
     }
 }
 
-impl LifetimeDef {
-    pub fn new(lifetime: Lifetime) -> Self {
-        LifetimeDef {
-            attrs: Vec::new(),
-            bounds: Delimited::new(),
-        }
-    }
-}
-
 ast_enum! {
     /// The AST represents all type param bounds as types.
     /// `typeck::collect::compute_bounds` matches these against
