@@ -34,4 +34,4 @@ pub use synom::delimited;
 ////////////////////////////////////////////////////////////////////////////////
 
 #[cfg(feature = "parsing")]
-use synom::{Synom, SynomBuffer};
+use synom::{Synom};
