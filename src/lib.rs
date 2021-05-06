@@ -16,9 +16,6 @@ extern crate synom;
 #[macro_use]
 mod macros;
 
-mod attr;
-
-
 mod generics;
 pub use generics::{Generics, LifetimeDef 
                    };
