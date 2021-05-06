@@ -20,10 +20,11 @@ mod printing {
 
     impl ToTokens for Lifetime {
         fn to_tokens(&self, tokens: &mut Tokens) {
-            tokens.append(TokenTree {
-                span: self.span.0,
-                kind: TokenNode::Term(self.sym),
-            })
+            tokens.append(dummy())
         }
     }
+}
+
+fn dummy() -> proc_macro2::TokenTree {
+    panic!()
 }
