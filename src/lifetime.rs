@@ -9,7 +9,6 @@ use Span;
 
 pub struct Lifetime {
     pub sym: Term,
-    pub span: Span,
 }
 
 #[cfg(feature = "printing")]
