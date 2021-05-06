@@ -16,6 +16,7 @@ ast_enum_of_structs! {
         /// No-op: kept solely so that we can pretty-print faithfully
         pub Group(TyGroup {
             pub ty: Box<Ty>,
+            pub other: Vec<Ty>,
         }),
     }
 }
@@ -68,6 +69,7 @@ pub mod parsing {
             data: grouped!(syn!(Ty)) >>
             (TyGroup {
                 ty: Box::new(data.0),
+                other: vec![]
             })
         ));
     }
