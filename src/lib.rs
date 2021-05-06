@@ -16,8 +16,6 @@ extern crate synom;
 #[macro_use]
 mod macros;
 
-mod generics;
-
 mod ident;
 pub use ident::Ident;
 
