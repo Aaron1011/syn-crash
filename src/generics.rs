@@ -89,17 +89,7 @@ ast_enum! {
     /// the "special" built-in traits (see `middle::lang_items`) and
     /// detects Copy, Send and Sync.
     pub enum TyParamBound {
-        Trait(PolyTraitRef, TraitBoundModifier),
+        Trait(PolyTraitRef),
         Region(Lifetime),
-    }
-}
-
-ast_enum! {
-    /// A modifier on a bound, currently this is only used for `?Sized`, where the
-    /// modifier is `Maybe`. Negative bounds should also be handled here.
-    #[cfg_attr(feature = "clone-impls", derive(Copy))]
-    pub enum TraitBoundModifier {
-        None,
-        Maybe(tokens::Question),
     }
 }

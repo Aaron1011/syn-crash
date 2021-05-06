@@ -21,7 +21,7 @@ pub use attr::{Attribute};
 
 
 mod generics;
-pub use generics::{Generics, LifetimeDef, TraitBoundModifier, TyParam, TyParamBound,
+pub use generics::{Generics, LifetimeDef, TyParam, TyParamBound,
                    BoundLifetimes};
 
 mod ident;
