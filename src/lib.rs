@@ -17,8 +17,6 @@ extern crate synom;
 mod macros;
 
 mod generics;
-pub use generics::{Generics, LifetimeDef 
-                   };
 
 mod ident;
 pub use ident::Ident;
