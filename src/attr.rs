@@ -12,6 +12,6 @@ use proc_macro2::{self, Delimiter, TokenNode, Spacing};
         ///
         /// E.g. `( Copy )` in `#[derive(Copy)]`
         /// E.g. `x < 5` in `#[crate::precondition x < 5]`
-        pub tts: Vec<TokenTree>,
+        pub tts: TokenTree,
     }
 //}
