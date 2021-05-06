@@ -8,7 +8,6 @@ use unicode_xid::UnicodeXID;
 use Span;
 
 pub struct Lifetime {
-    pub sym: Term,
 }
 
 #[cfg(feature = "printing")]
