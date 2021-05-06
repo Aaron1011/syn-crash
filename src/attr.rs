@@ -5,7 +5,7 @@ use std::iter;
 
 use proc_macro2::{self, Delimiter, TokenNode, Spacing};
 
-ast_struct! {
+//ast_struct! {
     /// Doc-comments are promoted to attributes that have `is_sugared_doc` = true
     pub struct Attribute {
         /// Any tokens after the path.
@@ -14,4 +14,4 @@ ast_struct! {
         /// E.g. `x < 5` in `#[crate::precondition x < 5]`
         pub tts: Vec<TokenTree>,
     }
-}
+//}
