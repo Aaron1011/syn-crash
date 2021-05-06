@@ -58,31 +58,6 @@ impl LifetimeDef {
     }
 }
 
-ast_struct! {
-    /// A generic type parameter, e.g. `T: Into<String>`.
-    pub struct TyParam {
-        pub attrs: Vec<Attribute>,
-        pub ident: Ident,
-        pub colon_token: Option<tokens::Colon>,
-        pub bounds: Delimited<TyParamBound, tokens::Add>,
-        pub eq_token: Option<tokens::Eq>,
-        pub default: Option<Ty>,
-    }
-}
-
-impl From<Ident> for TyParam {
-    fn from(ident: Ident) -> Self {
-        TyParam {
-            attrs: vec![],
-            ident: ident,
-            colon_token: None,
-            bounds: Delimited::new(),
-            eq_token: None,
-            default: None,
-        }
-    }
-}
-
 ast_enum! {
     /// The AST represents all type param bounds as types.
     /// `typeck::collect::compute_bounds` matches these against
