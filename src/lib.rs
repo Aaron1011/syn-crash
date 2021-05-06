@@ -17,7 +17,6 @@ extern crate synom;
 mod macros;
 
 mod attr;
-pub use attr::{Attribute};
 
 
 mod generics;
