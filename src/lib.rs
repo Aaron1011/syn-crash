@@ -35,7 +35,7 @@ pub use mac::{TokenTree};
 
 mod ty;
 pub use ty::{BareFnArg, BareFnArgName, BareFnTy,
-             FunctionRetTy, ParenthesizedParameterData, 
+             ParenthesizedParameterData, 
              PolyTraitRef, QSelf, Ty, TypeBinding, Unsafety,
              TyTraitObject, TyGroup};
 

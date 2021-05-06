@@ -112,19 +112,6 @@ ast_enum! {
     }
 }
 
-ast_enum! {
-    pub enum FunctionRetTy {
-        /// Return type is not specified.
-        ///
-        /// Functions default to `()` and
-        /// closures default to inference. Span points to where return
-        /// type would be inserted.
-        Default,
-        /// Everything else
-        Ty(Ty, tokens::RArrow),
-    }
-}
-
 #[cfg(feature = "parsing")]
 pub mod parsing {
     use super::*;
@@ -172,19 +159,6 @@ pub mod parsing {
             })
         ));
     }
-
-    impl Synom for FunctionRetTy {
-        named!(parse -> Self, alt!(
-            do_parse!(
-                arrow: syn!(RArrow) >>
-                ty: syn!(Ty) >>
-                (FunctionRetTy::Ty(ty, arrow))
-            )
-            |
-            epsilon!() => { |_| FunctionRetTy::Default }
-        ));
-    }
-
 
     impl Synom for TyGroup {
         named!(parse -> Self, do_parse!(
