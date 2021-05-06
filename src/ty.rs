@@ -37,30 +37,6 @@ ast_struct! {
 }
 
 ast_struct! {
-    /// The explicit Self type in a "qualified path". The actual
-    /// path, including the trait and the associated item, is stored
-    /// separately. `position` represents the index of the associated
-    /// item qualified with this Self type.
-    ///
-    /// ```rust,ignore
-    /// <Vec<T> as a::b::Trait>::AssociatedItem
-    ///  ^~~~~     ~~~~~~~~~~~~~~^
-    ///  ty        position = 3
-    ///
-    /// <Vec<T>>::AssociatedItem
-    ///  ^~~~~    ^
-    ///  ty       position = 0
-    /// ```
-    pub struct QSelf {
-        pub lt_token: tokens::Lt,
-        pub ty: Box<Ty>,
-        pub position: usize,
-        pub as_token: Option<tokens::As>,
-        pub gt_token: tokens::Gt,
-    }
-}
-
-ast_struct! {
     pub struct BareFnTy {
         pub lifetimes: Option<BoundLifetimes>,
         pub unsafety: Unsafety,
