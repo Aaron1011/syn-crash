@@ -32,7 +32,7 @@ ast_struct! {
 ast_struct! {
     pub struct PolyTraitRef {
         /// The `for<'a>` in `for<'a> Foo<&'a T>`
-        pub bound_lifetimes: Delimited<crate::generics::LifetimeDef, tokens::Comma>
+        pub bound_lifetimes: Delimited<Vec<TokenTree>, tokens::Comma>
     }
 }
 
