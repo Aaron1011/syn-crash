@@ -57,12 +57,6 @@ macro_rules! ast_enum_of_structs {
                 $(#[$variant_attr])*
                 pub struct $member $($rest)*
             }
-
-            impl From<$member> for $name {
-                fn from(e: $member) -> $name {
-                    $name::$variant(e)
-                }
-            }
         )*
 
     )
