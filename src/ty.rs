@@ -6,9 +6,7 @@ ast_enum_of_structs! {
     pub enum Ty {
         /// A tuple (`(A, B, C, D, ...)`)
         pub Tup(TyTup {
-            pub paren_token: tokens::Paren,
             pub tys: Delimited<Ty, tokens::Comma>,
-            pub lone_comma: Option<tokens::Comma>,
         }),
         /// A trait object type `Bound1 + Bound2 + Bound3`
         /// where `Bound` is a trait or a lifetime.
@@ -144,8 +142,6 @@ pub mod parsing {
             data: parens!(call!(Delimited::parse_terminated)) >>
             (TyTup {
                 tys: data.0,
-                paren_token: data.1,
-                lone_comma: None, // TODO: does this just not parse?
             })
         ));
     }
