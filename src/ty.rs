@@ -23,8 +23,6 @@ ast_enum_of_structs! {
 ast_struct! {
     /// A path like `Foo(A,B) -> C`
     pub struct ParenthesizedParameterData {
-        pub paren_token: tokens::Paren,
-        /// `(A, B)`
         pub inputs: Delimited<Ty, tokens::Comma>,
     }
 }
@@ -77,7 +75,6 @@ pub mod parsing {
         named!(parse -> Self, do_parse!(
             data: parens!(call!(Delimited::parse_terminated)) >>
             (ParenthesizedParameterData {
-                paren_token: data.1,
                 inputs: data.0,
             })
         ));
