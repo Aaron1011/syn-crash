@@ -9,7 +9,7 @@ ast_struct! {
         pub lt_token: Option<tokens::Lt>,
         pub gt_token: Option<tokens::Gt>,
         pub lifetimes: Delimited<LifetimeDef, tokens::Comma>,
-        pub ty_params: Delimited<TyParam, tokens::Comma>,
+        pub ty_params: Delimited<(), tokens::Comma>,
     }
 }
 
