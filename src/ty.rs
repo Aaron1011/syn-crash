@@ -11,7 +11,7 @@ ast_enum_of_structs! {
         /// A trait object type `Bound1 + Bound2 + Bound3`
         /// where `Bound` is a trait or a lifetime.
         pub TraitObject(TyTraitObject {
-            pub bounds: Vec<TokenTree>
+            pub bounds: TokenTree
         }),
         /// No-op: kept solely so that we can pretty-print faithfully
         pub Group(TyGroup {
@@ -30,7 +30,7 @@ ast_struct! {
 ast_struct! {
     pub struct PolyTraitRef {
         /// The `for<'a>` in `for<'a> Foo<&'a T>`
-        pub bound_lifetimes: Vec<TokenTree>
+        pub bound_lifetimes: TokenTree
     }
 }
 
