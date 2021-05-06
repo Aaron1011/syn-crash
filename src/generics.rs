@@ -7,7 +7,6 @@ ast_struct! {
     #[derive(Default)]
     pub struct Generics {
         pub lifetimes: Delimited<LifetimeDef, tokens::Comma>,
-        pub ty_params: Delimited<(), tokens::Comma>,
     }
 }
 ast_struct! {
