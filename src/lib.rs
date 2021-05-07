@@ -8,7 +8,6 @@ extern crate synom;
 
 mod ty;
 
-pub use synom::span::Span;
 pub use synom::tokens;
 pub use synom::delimited;
 
