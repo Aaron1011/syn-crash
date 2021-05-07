@@ -1,9 +1,5 @@
 extern crate proc_macro2;
-
-#[cfg(any(feature = "printing", feature = "parsing"))]
 extern crate quote;
-
-#[cfg_attr(feature = "parsing", macro_use)]
 extern crate synom;
 
 mod ty;
