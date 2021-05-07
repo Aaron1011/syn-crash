@@ -13,8 +13,6 @@ extern crate quote;
 #[cfg_attr(feature = "parsing", macro_use)]
 extern crate synom;
 
-mod lifetime;
-
 mod mac;
 pub use mac::{TokenTree};
 
