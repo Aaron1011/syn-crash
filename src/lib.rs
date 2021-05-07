@@ -13,9 +13,6 @@ extern crate quote;
 #[cfg_attr(feature = "parsing", macro_use)]
 extern crate synom;
 
-#[macro_use]
-mod macros;
-
 mod lifetime;
 
 mod mac;
