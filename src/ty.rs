@@ -45,7 +45,7 @@ pub mod parsing {
     impl Synom for ParenthesizedParameterData {
         fn parse(i: ::synom::Cursor) -> ::synom::PResult<Self> {
             match ::synom::tokens::Paren::parse(i, |i| Delimited::parse_terminated(i)) {
-                ::std::result::Result::Err(err) => ::std::result::Result::Err(err),
+                ::std::result::Result::Err(err) => panic!(),
                 ::std::result::Result::Ok((i, o)) => {
                     let data = o;
                     ::std::result::Result::Ok((
