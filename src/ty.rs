@@ -25,14 +25,9 @@ pub struct TyGroup {
 }
 
 
-ast_struct! {
-    /// A path like `Foo(A,B) -> C`
-    pub struct ParenthesizedParameterData {
-        pub inputs: Delimited<Ty, tokens::Comma>,
-    }
+pub struct ParenthesizedParameterData {
+	pub inputs: Delimited<Ty, tokens::Comma>,
 }
-
-
 
 #[cfg(feature = "parsing")]
 pub mod parsing {
