@@ -43,12 +43,18 @@ pub mod parsing {
 
 
     impl Synom for ParenthesizedParameterData {
-        named!(parse -> Self, do_parse!(
-            data: parens!(call!(Delimited::parse_terminated)) >>
-            (ParenthesizedParameterData {
-                inputs: data.0,
-            })
-        ));
+        fn parse(i: ::synom::Cursor) -> ::synom::PResult<Self> {
+            match ::synom::tokens::Paren::parse(i, |i| Delimited::parse_terminated(i)) {
+                ::std::result::Result::Err(err) => ::std::result::Result::Err(err),
+                ::std::result::Result::Ok((i, o)) => {
+                    let data = o;
+                    ::std::result::Result::Ok((
+                        i,
+                        (ParenthesizedParameterData { inputs: data.0 }),
+                    ))
+                }
+            }
+        }
     }
 
     impl Synom for TyGroup {
