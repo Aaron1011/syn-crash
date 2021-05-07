@@ -13,9 +13,6 @@ extern crate quote;
 #[cfg_attr(feature = "parsing", macro_use)]
 extern crate synom;
 
-mod mac;
-pub use mac::{TokenTree};
-
 mod ty;
 
 pub use synom::span::Span;

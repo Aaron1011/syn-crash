@@ -5,4 +5,4 @@ use super::*;
 
 use proc_macro2::{TokenNode, Delimiter};
 
-pub struct TokenTree(pub proc_macro2::TokenTree);
+

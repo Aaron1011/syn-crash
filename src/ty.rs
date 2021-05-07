@@ -1,6 +1,8 @@
 use delimited::Delimited;
 use super::*;
 
+pub struct TokenTree(pub proc_macro2::TokenTree);
+
 pub enum Ty {
 	/// A tuple (`(A, B, C, D, ...)`)
 	Tup(TyTup),
