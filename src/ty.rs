@@ -47,11 +47,8 @@ pub mod parsing {
             match ::synom::tokens::Paren::parse(i, |i| Delimited::parse_terminated(i)) {
                 ::std::result::Result::Err(err) => panic!(),
                 ::std::result::Result::Ok((i, o)) => {
-                    let data = o;
-                    ::std::result::Result::Ok((
-                        i,
-                        (ParenthesizedParameterData { inputs: data.0 }),
-                    ))
+                    ParenthesizedParameterData { inputs: o.0 };
+                    panic!()
                 }
             }
         }
