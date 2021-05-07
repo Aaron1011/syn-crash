@@ -41,7 +41,7 @@ pub mod parsing {
 
     fn ambig_ty(i: ::synom::Cursor, allow_plus: bool) -> ::synom::PResult<Ty> {
         match <TyGroup as ::synom::Synom>::parse(i) {
-            ::std::result::Result::Ok((i, o)) => ::std::result::Result::Ok((i, Ty::Group(o))),
+            ::std::result::Result::Ok((i, o)) =>  panic!(),
             ::std::result::Result::Err(err) => ::std::result::Result::Err(err),
         }
     }
