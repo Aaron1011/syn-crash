@@ -255,19 +255,3 @@ pub mod parsing {
         }
     }
 }
-
-#[cfg(feature = "printing")]
-mod printing {
-    use super::*;
-    use quote::{Tokens, ToTokens};
-    use proc_macro2::{TokenTree, TokenNode};
-
-    impl ToTokens for Ident {
-        fn to_tokens(&self, tokens: &mut Tokens) {
-            tokens.append(TokenTree {
-                span: self.span.0,
-                kind: TokenNode::Term(self.sym),
-            })
-        }
-    }
-}
