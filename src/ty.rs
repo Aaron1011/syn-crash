@@ -35,17 +35,10 @@ pub mod parsing {
 
     impl Synom for Ty {
         fn parse(i: ::synom::Cursor) -> ::synom::PResult<Self> {
-            ambig_ty(i, true)
+            <TyGroup as ::synom::Synom>::parse(i);
+            panic!()
         }
     }
-
-    fn ambig_ty(i: ::synom::Cursor, allow_plus: bool) -> ::synom::PResult<Ty> {
-        match <TyGroup as ::synom::Synom>::parse(i) {
-            ::std::result::Result::Ok((i, o)) =>  panic!(),
-            ::std::result::Result::Err(err) => ::std::result::Result::Err(err),
-        }
-    }
-
 
     impl Synom for ParenthesizedParameterData {
         fn parse(i: ::synom::Cursor) -> ::synom::PResult<Self> {
