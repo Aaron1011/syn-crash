@@ -11,7 +11,3 @@ mod printing {
         }
     }
 }
-
-fn dummy() -> proc_macro2::TokenTree {
-    panic!()
-}
