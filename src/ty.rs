@@ -27,14 +27,6 @@ ast_struct! {
     }
 }
 
-ast_struct! {
-    pub struct PolyTraitRef {
-        /// The `for<'a>` in `for<'a> Foo<&'a T>`
-        pub bound_lifetimes: TokenTree
-    }
-}
-
-
 #[cfg(feature = "parsing")]
 pub mod parsing {
     use super::*;
