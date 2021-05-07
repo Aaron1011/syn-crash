@@ -64,13 +64,10 @@ pub mod parsing {
 			match ::synom::tokens::Group::parse(i, |i| <Ty as ::synom::Synom>::parse(i)) {
 				::std::result::Result::Err(err) => ::std::result::Result::Err(err),
 				::std::result::Result::Ok((i, o)) => {
-					let data = o;
-					::std::result::Result::Ok((
-						i,
-						(TyGroup {
-							ty: Box::new(data.0),
-						}),
-					))
+					TyGroup {
+							ty: Box::new(o.0),
+					};
+                    panic!()
 				}
 			}
 		}
