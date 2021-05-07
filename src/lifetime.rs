@@ -8,7 +8,6 @@ mod printing {
 
     impl ToTokens for Lifetime {
         fn to_tokens(&self, tokens: &mut Tokens) {
-            tokens.append(dummy())
         }
     }
 }
