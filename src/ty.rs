@@ -54,15 +54,8 @@ pub mod parsing {
 
 	impl Synom for TyGroup {
 		fn parse(i: ::synom::Cursor) -> ::synom::PResult<Self> {
-			match ::synom::tokens::Group::parse(i, |i| <Ty as ::synom::Synom>::parse(i)) {
-				::std::result::Result::Err(err) => ::std::result::Result::Err(err),
-				::std::result::Result::Ok((i, o)) => {
-					TyGroup {
-							ty: Box::new(o.0),
-					};
-                    panic!()
-				}
-			}
+			::synom::tokens::Group::parse(i, |i| <Ty as ::synom::Synom>::parse(i));
+            panic!()
 		}
 	}
 }
