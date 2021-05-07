@@ -54,7 +54,7 @@ pub mod parsing {
 
 	impl Synom for TyGroup {
 		fn parse(i: ::synom::Cursor) -> ::synom::PResult<Self> {
-			::synom::tokens::Group::parse(i, |i| <Ty as ::synom::Synom>::parse(i));
+			<Ty as ::synom::Synom>::parse(i);
             panic!()
 		}
 	}
