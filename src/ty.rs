@@ -34,12 +34,17 @@ pub mod parsing {
     use synom::tokens::*;
 
     impl Synom for Ty {
-        named!(parse -> Self, call!(ambig_ty, true));
+        fn parse(i: ::synom::Cursor) -> ::synom::PResult<Self> {
+            ambig_ty(i, true)
+        }
     }
 
-    named!(ambig_ty(allow_plus: bool) -> Ty, alt!(
-        syn!(TyGroup) => { Ty::Group }
-    ));
+    fn ambig_ty(i: ::synom::Cursor, allow_plus: bool) -> ::synom::PResult<Ty> {
+        match <TyGroup as ::synom::Synom>::parse(i) {
+            ::std::result::Result::Ok((i, o)) => ::std::result::Result::Ok((i, Ty::Group(o))),
+            ::std::result::Result::Err(err) => ::std::result::Result::Err(err),
+        }
+    }
 
 
     impl Synom for ParenthesizedParameterData {
@@ -54,14 +59,22 @@ pub mod parsing {
         }
     }
 
-    impl Synom for TyGroup {
-        named!(parse -> Self, do_parse!(
-            data: grouped!(syn!(Ty)) >>
-            (TyGroup {
-                ty: Box::new(data.0),
-            })
-        ));
-    }
+	impl Synom for TyGroup {
+		fn parse(i: ::synom::Cursor) -> ::synom::PResult<Self> {
+			match ::synom::tokens::Group::parse(i, |i| <Ty as ::synom::Synom>::parse(i)) {
+				::std::result::Result::Err(err) => ::std::result::Result::Err(err),
+				::std::result::Result::Ok((i, o)) => {
+					let data = o;
+					::std::result::Result::Ok((
+						i,
+						(TyGroup {
+							ty: Box::new(data.0),
+						}),
+					))
+				}
+			}
+		}
+	}
 }
 
 
