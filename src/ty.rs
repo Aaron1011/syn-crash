@@ -1,24 +1,29 @@
 use delimited::Delimited;
 use super::*;
 
-ast_enum_of_structs! {
-    /// The different kinds of types recognized by the compiler
-    pub enum Ty {
-        /// A tuple (`(A, B, C, D, ...)`)
-        pub Tup(TyTup {
-            pub tys: Vec<Ty>,
-        }),
-        /// A trait object type `Bound1 + Bound2 + Bound3`
-        /// where `Bound` is a trait or a lifetime.
-        pub TraitObject(TyTraitObject {
-            pub bounds: TokenTree
-        }),
-        /// No-op: kept solely so that we can pretty-print faithfully
-        pub Group(TyGroup {
-            pub ty: Box<Ty>,
-        }),
-    }
+pub enum Ty {
+	/// A tuple (`(A, B, C, D, ...)`)
+	Tup(TyTup),
+	/// A trait object type `Bound1 + Bound2 + Bound3`
+	/// where `Bound` is a trait or a lifetime.
+	TraitObject(TyTraitObject),
+	/// No-op: kept solely so that we can pretty-print faithfully
+	Group(TyGroup),
 }
+/// A tuple (`(A, B, C, D, ...)`)
+pub struct TyTup {
+	pub tys: Vec<Ty>,
+}
+/// A trait object type `Bound1 + Bound2 + Bound3`
+/// where `Bound` is a trait or a lifetime.
+pub struct TyTraitObject {
+	pub bounds: TokenTree,
+}
+/// No-op: kept solely so that we can pretty-print faithfully
+pub struct TyGroup {
+	pub ty: Box<Ty>,
+}
+
 
 ast_struct! {
     /// A path like `Foo(A,B) -> C`
@@ -26,6 +31,8 @@ ast_struct! {
         pub inputs: Delimited<Ty, tokens::Comma>,
     }
 }
+
+
 
 #[cfg(feature = "parsing")]
 pub mod parsing {
