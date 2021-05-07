@@ -16,9 +16,6 @@ extern crate synom;
 #[macro_use]
 mod macros;
 
-mod ident;
-pub use ident::Ident;
-
 mod lifetime;
 
 mod mac;
