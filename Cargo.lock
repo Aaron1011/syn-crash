@@ -266,7 +266,6 @@ dependencies = [
  "syntex_pos",
  "syntex_syntax",
  "tempdir",
- "unicode-xid 0.1.0",
  "walkdir",
 ]
 
