@@ -1,3 +1,4 @@
+
 pub struct Lifetime {}
 
 #[cfg(feature = "printing")]
